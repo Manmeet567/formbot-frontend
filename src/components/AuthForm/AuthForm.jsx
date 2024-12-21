@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signupUser, loginUser } from "../../redux/slices/authSlice";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { fetchUserData } from "../../redux/slices/authSlice";
 
 const AuthForm = ({ type }) => {
   const dispatch = useDispatch();
@@ -41,15 +40,8 @@ const AuthForm = ({ type }) => {
       } else {
         await dispatch(loginUser(formData));
       }
-
-      // After successful login/signup, fetch user data
-      const token = localStorage.getItem("token"); // Assuming token is stored in localStorage after login/signup
-      if (token) {
-        await dispatch(fetchUserData(token)); // Fetch user data based on the token
-      }
-
-      // Get the redirect path from the location state or default to '/dashboard'
-      const redirectPath = location.state?.from || "/dashboard";
+      // Get the redirect path from the location state or default to '/workspace'
+      const redirectPath = location.state?.from || "/workspace";
       navigate(redirectPath);
     } catch (err) {
       setError(err.message);

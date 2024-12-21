@@ -1,0 +1,145 @@
+.home {
+  background: linear-gradient(0deg, #121212, #121212),
+    linear-gradient(0deg, #171923, #171923),
+    linear-gradient(0deg, #171923, #171923);
+  padding: 30px;
+  width: 100%;
+}
+.home-header {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.hh-logo {
+  display: flex;
+  align-items: center;
+}
+.hh-logo > p {
+  color: #fff;
+  margin-left: 10px;
+  font-weight: 700;
+  font-size: 18px;
+}
+.hh-btns > a:nth-child(1) > button {
+  color: #7ea6ff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 10.05px 17px 10.75px;
+  background-color: transparent;
+  border-radius: 6px;
+  border: 1px solid #7ea6ff;
+  margin-right: 20px;
+  cursor: pointer;
+  outline: none;
+}
+.hh-btns > a:nth-child(2) > button {
+  font-size: 16px;
+  font-weight: 700;
+  padding: 10.05px 17px 10.75px;
+  border-radius: 6px;
+  background-color: #1a5fff;
+  color: #fff;
+  border: 1px solid #1a5fff;
+  cursor: pointer;
+  outline: none;
+}
+.home-hero {
+  width: 1200px;
+  margin: 0 auto;
+}
+.hh-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 150px;
+  margin-bottom: 100px;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+.hh-info > img:nth-child(1),
+.hh-info > img:nth-child(2) {
+  position: absolute;
+  z-index: 1;
+  object-fit: contain;
+}
+.hh-info > img:nth-child(1) {
+  right: -120px;
+  top: 10%;
+}
+.hh-info > img:nth-child(2) {
+  left: -170px;
+  top: 18%;
+}
+.hh-info > p:nth-child(3) {
+  /* padding: 0px 94.91px; */
+  width: 1000px;
+  margin: 0 auto;
+  font-size: 72px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #4b83ff 0%, #b794f4 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+.hh-info > p:nth-child(4) {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 30px;
+  text-align: center;
+  color: #fff;
+  width: 772px;
+  margin: 10px auto;
+}
+
+.hh-info > button {
+  color: #fff;
+  background-color: #1a5fff;
+  padding: 21.15px 32px 21.25px 32px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.home > footer{
+    width: 1000px;
+    margin: 150px auto 30px;
+    display: flex;
+    justify-content: space-between;
+}
+.footer-first, .footer-links{
+    width: 214px;
+    margin-right: 20px;
+}
+.home > footer > .footer-links:nth-child(4){
+    margin-right: 0;
+}
+.footer-first > p:nth-child(2){
+    font-size: 16px;
+    line-height: 24px;
+    color: #FFFFFFEB;
+    margin-top: 15px;
+}
+.footer-links > p:nth-child(1){
+    color: #FFFFFFEB;
+    font-weight: 500;
+    font-size: 18px;
+    font-family: 'Outfit', serif;
+    margin-bottom: 15px;
+}
+.footer-links > .fl-links{
+    color: #FFFFFFEB;
+    font-family: 'Open Sans', serif;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.fl-links > p{
+    margin-bottom: 10px;
+}

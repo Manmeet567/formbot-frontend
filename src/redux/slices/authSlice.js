@@ -31,7 +31,7 @@ export const loginUser = createAsyncThunk(
 // Thunk to fetch user data from backend using the token
 export const fetchUserData = createAsyncThunk(
   "auth/fetchUserData",
-  async ({ rejectWithValue }) => {
+  async (_,{ rejectWithValue }) => {
     try {
       const response = await apiClient.get("/user/get-user");
       return response.data;

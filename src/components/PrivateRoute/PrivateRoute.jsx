@@ -2,15 +2,14 @@ import React from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 const PrivateRoute = () => {
-  const location = useLocation(); // Get current location
-  const token = localStorage.getItem('token'); // Check for token in localStorage
+  const location = useLocation(); 
+  const token = localStorage.getItem('token'); 
 
   if (!token) {
    
     return <Navigate to="/login" state={{ from: location }} />;
   }
 
-  // If authenticated, allow access to nested routes
   return <Outlet />;
 };
 
