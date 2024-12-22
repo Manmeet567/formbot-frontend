@@ -3,12 +3,20 @@
 :root {
   --bg-color: #ffffff;
   --text-color: #000000;
+  --bg-color-other: #d6d6d6;
+  --im-border-color: #ffffff80;
+  --im-bg-color: #f0f0f0;
+  --im-input-bg-color: #ffffff;
 }
 
 [data-theme="dark"] {
   --bg-color: linear-gradient(0deg, #121212, #121212),
     linear-gradient(0deg, #18181b, #18181b);
   --text-color: #ffffff;
+  --bg-color-other: #18181b;
+  --im-border-color: #000000e6;
+  --im-bg-color: #18181b;
+  --im-input-bg-color: #1f1f23;
 }
 
 * {

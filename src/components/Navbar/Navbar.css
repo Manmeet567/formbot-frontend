@@ -52,8 +52,8 @@
   font-weight: 600;
 }
 
-button {
-  margin:0 40px; /* Space between switch and button */
+.nv-right > button {
+  margin:0 40px; 
   padding: 8px 16px;
   background-color: #1a5fff;
   color: white;

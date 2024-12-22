@@ -1,0 +1,67 @@
+
+.invite-modal {
+  width: 831px;
+  border: 0.2px solid var(--im-border-color);
+  box-shadow: 0px 0px 3.8px 0px #ffffff40;
+  background: var(--im-bg-color);
+  border-radius: 24px;
+  padding: 40px;
+  position: relative;
+}
+.im-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 80px;
+}
+.im-header > select {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 16px;
+}
+.im-header > select > option {
+  width: 75px;
+  background: var(--im-bg-color);
+  box-shadow: 0px 1px 3.5px 0px #ffffff40;
+  border: 0.2px solid #ffffff80;
+  border-radius: 2px;
+}
+.im-text {
+  color: var(--text-color);
+  font-size: 27.33px;
+  font-weight: 600;
+}
+.im-fields > input {
+  width: 100%;
+  background: var(--im-input-bg-color);
+  border: none;
+  outline: none;
+  border-radius: 12px;
+  font-size: 20px;
+  color: var(--text-color);
+  padding: 15px 25px;
+  margin-top: 30px;
+}
+.im-fields > input::placeholder {
+  color: #a1a1a14f;
+}
+.im-btn {
+  width: 100%;
+  text-align: center;
+  margin: 30px 0;
+  box-shadow: 0px 4px 10px 0px #e9444b40;
+  background: #1a5fff;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  color: #fff;
+  padding: 10px 0;
+  font-weight: 500;
+  letter-spacing: 3%;
+  cursor: pointer;
+  font-size: 16px;
+}

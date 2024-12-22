@@ -1,7 +1,15 @@
+import { useState } from "react";
 import ToggleSwitch from "./ToggleSwitch";
 import "./Navbar.css";
+import InviteModal from "../InviteModal/InviteModal";
+import Modal from '../Modal/Modal';
 
 function Navbar() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
     <nav className="navbar open-sans">
       <div className="nv-left"></div>
@@ -14,8 +22,12 @@ function Navbar() {
           <ToggleSwitch />
           <p>Dark</p>
         </div>
-        <button>Share</button>
+        <button onClick={() => openModal()}>Share</button>
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={closeModal} center={true}>
+        <InviteModal setIsModalOpen={setIsModalOpen} />
+      </Modal>
     </nav>
   );
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createForm, createFolder } from '../redux/slices/workspaceSlice';  // Update the import path based on your project structure
 import Navbar from '../components/Navbar/Navbar';
+import MainWorkspace from '../components/WorkspaceComponents/MainWorkspace/MainWorkspace';
 
 function Workspace() {
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ function Workspace() {
   return (
     <div className='workspace'>
       <Navbar />
-
+      <MainWorkspace />
 
       {/* <h2>Workspace</h2>
   

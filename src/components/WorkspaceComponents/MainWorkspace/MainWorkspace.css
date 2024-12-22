@@ -1,0 +1,75 @@
+:root {
+  --mwf-color: #00000014;
+  --form-bg-color: #70707080;
+}
+[data-theme="dark"] {
+  --mwf-color: #ffffff14;
+  --form-bg-color:#FFFFFF80;
+}
+
+.main-workspace {
+  width: 1000px;
+  margin: 40px auto;
+}
+.mw-folders {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mwf-create,
+.mwf-folder {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: var(--mwf-color);
+  border-radius: 6px;
+  color: var(--nav-text-color);
+  cursor: pointer;
+  font-weight: 600;
+}
+.mwf-create > span {
+  margin-left: 10px;
+}
+.mwf-folder > .mwf-delete {
+  margin-left: 15px;
+  cursor: pointer;
+  color: #f55050;
+  font-size:24px;
+}
+
+.mw-forms {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+  grid-gap: 40px 20px;
+  width: 100%; 
+}
+.mwf-create-form {
+  height: 270px;
+  background-color: #1a5fff;
+  border-radius: 6px;
+  padding: 80.2px 41.4px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+.mwf-create-form > p {
+  margin-top: 30px;
+  cursor: pointer;
+  font-size: 18px;
+}
+.mwf-form {
+  display: flex;
+  height: 270px;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
+  background-color: var(--form-bg-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+}
