@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createForm, createFolder } from '../redux/slices/workspaceSlice';  // Update the import path based on your project structure
+import Navbar from '../components/Navbar/Navbar';
 
 function Workspace() {
   const dispatch = useDispatch();
@@ -36,9 +37,11 @@ function Workspace() {
 
   return (
     <div className='workspace'>
-      <h2>Workspace</h2>
-      
-      {/* Folder creation */}
+      <Navbar />
+
+
+      {/* <h2>Workspace</h2>
+  
       <div>
         <input
           type="text"
@@ -49,7 +52,6 @@ function Workspace() {
         <button onClick={handleCreateFolder}>Add Folder</button>
       </div>
 
-      {/* Form creation */}
       <div>
         <input
           type="text"
@@ -58,7 +60,7 @@ function Workspace() {
           placeholder="Enter form title"
         />
         <button onClick={handleCreateForm}>Add Form</button>
-      </div>
+      </div> */}
     </div>
   );
 }
