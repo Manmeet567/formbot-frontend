@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineFolderAdd } from "react-icons/ai";
 import "./MainWorkspace.css";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa6";
 import Modal from "../../Modal/Modal";
 import CreateModal from "../CreateModal/CreateModal";
+import { useSelector, useDispatch } from "react-redux";
+import { getWorkspaces } from "../../../redux/slices/workspaceSlice";
 
 function MainWorkspace() {
+  const dispatch = useDispatch();
+  const { userData } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (userData) {
+      dispatch(getWorkspaces());
+    }
+  }, []);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [useFor, setUseFor] = useState("");
   const openModal = () => setIsModalOpen(true);
@@ -15,7 +25,13 @@ function MainWorkspace() {
   return (
     <div className="main-workspace">
       <div className="mw-folders open-sans">
-        <div className="mwf-create" onClick={() => {setUseFor("folder"); openModal();}}>
+        <div
+          className="mwf-create"
+          onClick={() => {
+            setUseFor("folder");
+            openModal();
+          }}
+        >
           <AiOutlineFolderAdd style={{ fontSize: "20px" }} />
           <span>Create a folder</span>
         </div>
@@ -25,7 +41,13 @@ function MainWorkspace() {
         </div>
       </div>
       <div className="mw-forms open-sans">
-        <div className="mwf-create-form" onClick={() => {setUseFor("form"); openModal();}}>
+        <div
+          className="mwf-create-form"
+          onClick={() => {
+            setUseFor("form");
+            openModal();
+          }}
+        >
           <FaPlus style={{ fontSize: "40px" }} />
           <p>Create a typebot</p>
         </div>

@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signupUser, loginUser } from "../../redux/slices/authSlice";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import "./AuthForm.css";
-import triangle from '../../assets/triangle.png';
+import triangle from "../../assets/triangle.png";
 
 const AuthForm = ({ type }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation(); // To get the previous location (redirect target)
+  const { userData } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -45,7 +46,7 @@ const AuthForm = ({ type }) => {
         await dispatch(loginUser(formData));
       }
       // Get the redirect path from the location state or default to '/workspace'
-      const redirectPath = location.state?.from || "/workspace";
+      const redirectPath = location.state?.from || `/workspace/${userData?.workspaceId}`;
       navigate(redirectPath);
     } catch (err) {
       setError(err.message);
@@ -88,7 +89,7 @@ const AuthForm = ({ type }) => {
             />
           </div>
 
-          <div style={type === "login" ? {marginBottom:"25px"}: {}}>
+          <div style={type === "login" ? { marginBottom: "25px" } : {}}>
             <label>Password</label>
             <input
               type="password"
@@ -101,7 +102,7 @@ const AuthForm = ({ type }) => {
           </div>
 
           {type === "signup" && (
-            <div style={{marginBottom:"25px"}}>
+            <div style={{ marginBottom: "25px" }}>
               <label>Confirm Password</label>
               <input
                 type="password"

@@ -21,7 +21,6 @@ const ToggleSwitch = () => {
         checkedIcon={false}      /* No icons inside the switch */
         boxShadow="0px 1px 5px rgba(0, 0, 0, 0.2)"  /* Shadow for the switch handle */
         activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.1)" /* Active shadow */
-        handleColor="#fff"       /* Color of the handle */
       />
     </div>
   );

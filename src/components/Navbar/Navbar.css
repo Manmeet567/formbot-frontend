@@ -1,10 +1,12 @@
 :root {
   --nav-text-color: #000000eb;
   --nav-border-color: #d6d6d6;
+  --nav-select-bg-color: #ffffff;
 }
 [data-theme="dark"] {
   --nav-text-color: #ffffffeb;
   --nav-border-color: #ffffff29;
+  --nav-select-bg-color: #1d1d1d;
 }
 
 .navbar {
@@ -22,18 +24,47 @@
 .nv-workspace {
   width: 292px;
   height: 40px;
+  position: relative;
+  display: block;
   border-radius: 6px;
-  padding: 8px 9px;
-  border: 1px solid var(--nav-border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.nv-workspace p {
   font-size: 16px;
   font-weight: 600;
   color: var(--nav-text-color);
+  cursor: pointer;
+}
+
+.nv-workspace-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 9px;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  border: 1px solid var(--nav-border-color);
+}
+
+.nv-workspace-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: var(--nav-select-bg-color);
+  border-left: 1px solid var(--nav-border-color);
+  border-right: 1px solid var(--nav-border-color);
+  border-bottom: 1px solid var(--nav-border-color);
+  border-radius: 0px 0px 6px 6px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.nv-workspace-options div {
+  padding: 8px 9px;
+  cursor: pointer;
 }
 
 .nv-right {
@@ -47,13 +78,13 @@
   display: flex;
   align-items: center;
   margin-right: 20px;
-  gap: 10px; 
+  gap: 10px;
   font-size: 14px;
   font-weight: 600;
 }
 
 .nv-right > button {
-  margin:0 40px; 
+  margin: 0 40px;
   padding: 8px 16px;
   background-color: #1a5fff;
   color: white;
