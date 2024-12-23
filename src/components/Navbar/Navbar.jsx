@@ -56,7 +56,7 @@ function Navbar() {
               </div>
             </Link>
             <div
-              onClick={handleLogout} // Call handleLogout on logout
+              onClick={handleLogout} 
               style={{ color: "#FFA54C" }}
             >
               Logout

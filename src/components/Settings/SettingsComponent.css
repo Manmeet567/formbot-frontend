@@ -1,0 +1,68 @@
+.settings {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background: var(--bg-color);
+  position: relative;
+}
+
+.settings > p:nth-child(1) {
+  color: var(--text-color);
+  font-size: 22px;
+  font-weight: 600;
+  margin: 30px 0 50px;
+}
+.settings > form {
+  width: 493.39px;
+}
+.s-field {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: var(--text-color);
+  padding: 8px 10px;
+  border: 1.38px solid #d0d0d0;
+  border-radius: 11.03px;
+  margin-bottom: 20px;
+}
+.s-field > .sf-first-icon {
+  margin-right: 10px;
+  font-size: 33.08px;
+}
+.s-field > input {
+  width: 100%;
+  font-size: 19.29px;
+  background-color: transparent;
+  border: none;
+  color: var(--text-color);
+  outline: none;
+}
+.sf-field > input::placeholder {
+  color: #828282;
+}
+.settings > form > button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 11.03px 0;
+  font-size: 19.29px;
+  border: none;
+  outline: none;
+  border-radius: 50px;
+  color: #fff;
+  background-color: #1A5FFF;
+  cursor: pointer;
+}
+.settings-logout{
+    position: absolute;
+    bottom: 50px;
+    left: 50px;
+    color: #CF3636;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
