@@ -6,8 +6,8 @@ const PublicRoute = () => {
   const { userData } = useSelector((state) => state.auth);
   const token = localStorage.getItem('token');
 
-  if (token) {
-    return <Navigate to={`/workspace/${userData?.workspaceId}`} />;
+  if (token && userData) {
+    return <Navigate to={`/workspace`} />;
   }
 
   // If the user is not logged in, render the public route (login or signup)

@@ -20,6 +20,7 @@ export const createForm = createAsyncThunk(
 
 const initialState = {
   forms: [],
+  activeForm: null,
   loading: false,
   error: null,
 };
@@ -28,6 +29,9 @@ const formSlice = createSlice({
   name: "form",
   initialState,
   reducers: {
+    setForms: (state, action) => {
+      state.forms = action.payload;
+    },
     updateForm: (state, action) => {
       const { workspaceId, formId, formData } = action.payload;
       const form = state.forms.find(
@@ -38,24 +42,7 @@ const formSlice = createSlice({
       }
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(createForm.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(createForm.fulfilled, (state, action) => {
-        state.loading = false;
-        state.forms.push(action.payload);
-        toast.success("Form Created");
-      })
-      .addCase(createForm.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-        toast.error(action.payload);
-      });
-  },
 });
 
-export const { updateForm } = formSlice.actions;
+export const { updateForm, setForms } = formSlice.actions;
 export default formSlice.reducer;

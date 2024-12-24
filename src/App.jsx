@@ -11,21 +11,25 @@ import { useEffect } from "react";
 import PublicRoute from "./components/PrivateRoute/PublicRoute";
 import Workspace from "./pages/Workspace";
 import Settings from "./pages/Settings";
+import { setActiveWorkspace } from "./redux/slices/workspaceSlice";
 
 function App() {
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
 
   const { userData } = useSelector((state) => state.auth);
+  const {activeWorkspace} = useSelector((state) => state.workspace);
   useEffect(() => {
-    console.log(userData);
-  }, [userData]);
+    console.log(activeWorkspace)
+  }, [activeWorkspace])
 
   useEffect(() => {
     if (token && !userData) {
-      dispatch(fetchUserData());
-    } else if (userData) {
-      dispatch(getWorkspaces(userData?._id));
+      dispatch(fetchUserData()).unwrap();
+    } 
+    if(userData) {
+      const ownedWorkspace = userData.workspaceAccess.find(workspace => workspace.ownerId === userData._id);
+      dispatch(setActiveWorkspace(ownedWorkspace));
     }
   }, [dispatch, token, userData]);
 
@@ -44,7 +48,7 @@ function App() {
 
           {/* Protected Routes */}
           <Route element={<PrivateRoute />}>
-            <Route path="/workspace/:workspaceId" element={<Workspace />} />
+            <Route path="/workspace" element={<Workspace />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/create-form" element={<div>form</div>} />
           </Route>

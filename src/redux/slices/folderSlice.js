@@ -5,10 +5,10 @@ import { toast } from "react-toastify";
 // Create a new folder inside a workspace
 export const createFolder = createAsyncThunk(
   "folder/createFolder",
-  async ({ workspaceId, folderData }, { rejectWithValue }) => {
+  async ({ activeWorkspace, folderData }, { rejectWithValue }) => {
     try {
       const response = await apiClient.post(
-        `/folder/${workspaceId}/create`,
+        `/folder/${activeWorkspace}/create`,
         folderData
       );
       return response.data;
@@ -20,6 +20,7 @@ export const createFolder = createAsyncThunk(
 
 const initialState = {
   folders: [],
+  activeFolder:null,
   loading: false,
   error: null,
 };
@@ -28,13 +29,16 @@ const folderSlice = createSlice({
   name: "folder",
   initialState,
   reducers: {
+    setfolders: (state,action) => {
+      state.folders = action.payload;
+    },
     updateFolder: (state, action) => {
       const { workspaceId, folderId, folderData } = action.payload;
       const folder = state.folders.find(
         (folder) => folder.id === folderId && folder.workspaceId === workspaceId
       );
       if (folder) {
-        folder.data = folderData; // Update the folder data
+        folder.data = folderData; 
       }
     },
   },
@@ -57,5 +61,5 @@ const folderSlice = createSlice({
   },
 });
 
-export const { updateFolder } = folderSlice.actions;
+export const { updateFolder, setfolders } = folderSlice.actions;
 export default folderSlice.reducer;

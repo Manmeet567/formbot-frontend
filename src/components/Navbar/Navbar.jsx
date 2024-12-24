@@ -12,6 +12,7 @@ function Navbar() {
   const dispatch = useDispatch(); // Initialize useDispatch
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { userData } = useSelector((state) => state.auth);
+  const { activeWorkspace } = useSelector((state) => state.workspace);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -43,22 +44,34 @@ function Navbar() {
               : {}
           }
         >
-          <p>{userData?.name}'s Workspace</p>
+          <p>{activeWorkspace ? `${activeWorkspace.ownerName}'s Workspace` : "Loading..."}</p>
           {openWorkspace ? <FaAngleUp /> : <FaAngleDown />}
         </div>
         {openWorkspace && (
           <div className="nv-workspace-options">
+            {userData?.workspaceAccess.map((workspace) => {
+              activeWorkspace?.workspaceId !== workspace?._id && (
+                <div
+                  style={{
+                    borderBottom: "1px solid var(--nav-border-color)",
+                    color: "var(--nav-text-color)",
+                  }}
+                >
+                  {workspace?.ownerName}'s Workspace
+                </div>
+              );
+            })}
             <Link to="/settings">
               <div
-                style={{ borderBottom: "1px solid var(--nav-border-color)", color:"var(--nav-text-color)" }}
+                style={{
+                  borderBottom: "1px solid var(--nav-border-color)",
+                  color: "var(--nav-text-color)",
+                }}
               >
                 Settings
               </div>
             </Link>
-            <div
-              onClick={handleLogout} 
-              style={{ color: "#FFA54C" }}
-            >
+            <div onClick={handleLogout} style={{ color: "#FFA54C" }}>
               Logout
             </div>
           </div>

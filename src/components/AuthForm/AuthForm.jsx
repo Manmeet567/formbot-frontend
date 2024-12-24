@@ -41,13 +41,16 @@ const AuthForm = ({ type }) => {
     try {
       if (type === "signup") {
         // Dispatch signup
-        await dispatch(signupUser(formData));
+        await dispatch(signupUser(formData)).unwrap();
       } else {
-        await dispatch(loginUser(formData));
+        await dispatch(loginUser(formData)).unwrap();
       }
       // Get the redirect path from the location state or default to '/workspace'
-      const redirectPath = location.state?.from || `/workspace/${userData?.workspaceId}`;
-      navigate(redirectPath);
+      if (userData) {
+        const redirectPath =
+          location.state?.from || `/workspace`;
+        navigate(redirectPath);
+      }
     } catch (err) {
       setError(err.message);
     }

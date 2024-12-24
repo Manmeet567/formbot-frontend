@@ -1,16 +1,14 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { createForm } from "../../../redux/slices/formSlice";
 import { createFolder } from "../../../redux/slices/folderSlice";
-import { useParams } from "react-router-dom";
 import "./CreateModal.css";
 
 function CreateModal({ useFor, setIsModalOpen }) {
-  const [inputValue, setInputValue] = useState(""); // For both folder and form input
+  const [inputValue, setInputValue] = useState("");
   const dispatch = useDispatch();
-  const { workspaceId } = useParams(); // Assuming you have workspaceId in the URL
+  const { activeWorkspace } = useSelector((state) => state.workspace);
 
-  // Handle folder creation
   const handleCreateFolder = () => {
     if (inputValue.trim() === "") {
       alert("Folder title is required!");
@@ -18,7 +16,7 @@ function CreateModal({ useFor, setIsModalOpen }) {
     }
 
     const folderData = { title: inputValue };
-    dispatch(createFolder({ workspaceId, folderData }));
+    dispatch(createFolder({ activeWorkspace: activeWorkspace?.workspaceId, folderData }));
     setInputValue(""); // Clear the input after submission
     setIsModalOpen(false); // Close the modal
   };
