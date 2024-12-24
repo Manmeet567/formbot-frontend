@@ -1,0 +1,119 @@
+:root {
+  --form-nav-bg-color: #ffffff;
+  --nav-border-color: #d6d6d6;
+  --form-nav-input-bg: #ffffff;
+  --form-nav-input-border: #d6d6d6;
+}
+[data-theme="dark"] {
+  --form-nav-bg-color: #18181b;
+  --nav-border-color: #ffffff29;
+  --form-nav-input-bg: #37373e;
+  --form-nav-input-border: #37373e;
+}
+
+.form-navbar {
+  background-color: var(--form-nav-bg-color);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  border-bottom: 1px solid var(--nav-border-color);
+  padding: 8px 30px;
+}
+.form-nav-input > input {
+  width: 148px;
+  height: 23px;
+  outline: none;
+  border-radius: 3px;
+  color: var(--nav-text-color);
+  background-color: var(--form-nav-input-bg);
+  font-size: 12px;
+  font-weight: 600;
+  padding-left: 10px;
+  border: 1px solid var(--form-nav-input-border);
+}
+.form-nav-input > input::placeholder {
+  color: #767676d1;
+}
+.fn-btns > button:nth-child(1) {
+  margin-right: 10px;
+}
+.fn-btns{
+    display: flex;
+    align-items: center;
+}
+.fn-btn {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: var(--nav-text-color);
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 7.2px 13px 8px 13px;
+}
+.fnb-active {
+  height: 32px;
+  border: 1px solid #7ea6ff;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #7ea6ff;
+  background-color: transparent;
+  outline: none;
+  padding: 7.2px 13px 8px 13px;
+  cursor: pointer;
+}
+.fnb-response{
+    border: 1px solid #444444;
+    border-radius: 6px;
+    color: #4B83FF;
+    font-size: 14px;
+    background-color: transparent;
+    font-weight: 600;
+    padding: 7.2px 13px 8px 13px;
+}
+.fn-end-btns{
+    display: flex;
+    align-items: center;
+}
+.fneb-btns{
+    display: flex;
+    align-items: center;
+}
+.fneb-btns > button:nth-child(1){
+    background-color: #1A5FFF;
+    color: #fff;
+    border-radius: 4px;
+    width: 65px;
+    padding: 8px 0;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.fneb-btns > button:nth-child(1):disabled{
+    background-color: #848890;
+    cursor: not-allowed;
+}
+.fneb-btns > button:nth-child(2){
+    background-color: #4ADE80CC;
+    color: #fff;
+    border-radius: 4px;
+    width: 65px;
+    padding: 8px 0;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.fneb-close{
+    color: #F55050;
+    font-size: 24px;
+    cursor: pointer;
+}

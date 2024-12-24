@@ -5,12 +5,12 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import { fetchUserData } from "./redux/slices/authSlice";
-import { getWorkspaces } from "./redux/slices/workspaceSlice"; // Import getWorkspaces action
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import PublicRoute from "./components/PrivateRoute/PublicRoute";
 import Workspace from "./pages/Workspace";
 import Settings from "./pages/Settings";
+import Form from "./pages/Form";
 import { setActiveWorkspace } from "./redux/slices/workspaceSlice";
 
 function App() {
@@ -18,17 +18,19 @@ function App() {
   const token = localStorage.getItem("token");
 
   const { userData } = useSelector((state) => state.auth);
-  const {activeWorkspace} = useSelector((state) => state.workspace);
+  const { activeWorkspace } = useSelector((state) => state.workspace);
   useEffect(() => {
-    console.log(activeWorkspace)
-  }, [activeWorkspace])
+    console.log(activeWorkspace);
+  }, [activeWorkspace]);
 
   useEffect(() => {
     if (token && !userData) {
       dispatch(fetchUserData()).unwrap();
-    } 
-    if(userData) {
-      const ownedWorkspace = userData.workspaceAccess.find(workspace => workspace.ownerId === userData._id);
+    }
+    if (userData) {
+      const ownedWorkspace = userData.workspaceAccess.find(
+        (workspace) => workspace.ownerId === userData._id
+      );
       dispatch(setActiveWorkspace(ownedWorkspace));
     }
   }, [dispatch, token, userData]);
@@ -49,6 +51,7 @@ function App() {
           {/* Protected Routes */}
           <Route element={<PrivateRoute />}>
             <Route path="/workspace" element={<Workspace />} />
+            <Route path="/form/:formId" element={<Form />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/create-form" element={<div>form</div>} />
           </Route>
