@@ -10,6 +10,9 @@ import { setWorkspace } from "../../../redux/slices/workspaceSlice";
 import { setfolders } from "../../../redux/slices/folderSlice";
 import { setForms } from "../../../redux/slices/formSlice";
 import apiClient from "../../../../utils/apiClient";
+import { deleteFolder } from "../../../redux/slices/folderSlice";
+import { deleteForm } from "../../../redux/slices/formSlice";
+import DeleteModal from "../DeleteModal/DeleteModal";
 
 function MainWorkspace() {
   const dispatch = useDispatch();
@@ -18,6 +21,8 @@ function MainWorkspace() {
     (state) => state.workspace
   );
   const { folders } = useSelector((state) => state.folder);
+
+  const { forms } = useSelector((state) => state.form);
 
   useEffect(() => {
     const fetchWorkspace = async () => {
@@ -39,13 +44,35 @@ function MainWorkspace() {
   }, [activeWorkspace]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
   const [useFor, setUseFor] = useState("");
+  const [deleteFor, setDeleteFor] = useState("");
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const openDeleteModal = () => setIsDeleteModal(true);
+  const closeDeleteModal = () => setIsDeleteModal(false);
+
+  const handleFolderDelete = (folderId) => {
+    const workspaceId = activeWorkspace?.workspaceId;
+    dispatch(deleteFolder({ folderId, workspaceId }));
+  };
+
+  const handleFormDelete = (formId) => {
+    const workspaceId = activeWorkspace?.workspaceId;
+    dispatch(deleteForm({ formId, workspaceId }));
+  };
 
   return (
     <div className="main-workspace">
-      {!workspace && <p className="poppins" style={{fontSize:"30px", color:"var(--text-color)"}}>Loading...</p>}
+      {!workspace && (
+        <p
+          className="poppins"
+          style={{ fontSize: "30px", color: "var(--text-color)" }}
+        >
+          Loading...
+        </p>
+      )}
       {workspace && (
         <>
           <div className="mw-folders open-sans">
@@ -63,7 +90,15 @@ function MainWorkspace() {
               folders.map((folder) => (
                 <div className="mwf-folder" key={folder?._id}>
                   <span>{folder?.title}</span>
-                  <RiDeleteBin6Line className="mwf-delete" />
+                  <RiDeleteBin6Line
+                    className="mwf-delete"
+                    onClick={() => {
+                      setDeleteFor("folder");
+                      setDeleteId(folder?._id);
+                      openDeleteModal();
+                    }}
+                    title="Delete Folder"
+                  />
                 </div>
               ))}
           </div>
@@ -78,25 +113,39 @@ function MainWorkspace() {
               <FaPlus style={{ fontSize: "40px" }} />
               <p>Create a typebot</p>
             </div>
-            <div className="mwf-form">
-              <p>New form</p>
-              <RiDeleteBin6Line
-                style={{
-                  fontSize: "24px",
-                  position: "absolute",
-                  top: "-10px",
-                  right: "-10px",
-                  color: "#f55050",
-                  cursor: "pointer",
-                }}
-                title="Delete Form"
-              />
-            </div>
+            {forms?.length !== 0 &&
+              forms.map((form) => (
+                <div className="mwf-form" key={form?._id}>
+                  <p>{form?.title}</p>
+                  <RiDeleteBin6Line
+                    style={{
+                      fontSize: "24px",
+                      position: "absolute",
+                      top: "-10px",
+                      right: "-10px",
+                      color: "#f55050",
+                      cursor: "pointer",
+                    }}
+                    title="Delete Form"
+                    onClick={() => {
+                      // handleFormDelete(form?._id);
+
+                      setDeleteFor("form");
+                      setDeleteId(form?._id)
+                      openDeleteModal();
+                    }}
+                  />
+                </div>
+              ))}
           </div>
         </>
       )}
       <Modal isOpen={isModalOpen} onClose={closeModal} center={false}>
         <CreateModal useFor={useFor} setIsModalOpen={setIsModalOpen} />
+      </Modal>
+
+      <Modal isOpen={isDeleteModal} onClose={closeDeleteModal} center={false}>
+        <DeleteModal deleteFor={deleteFor} setIsDeleteModal = {setIsDeleteModal} deleteId = {deleteId}  />
       </Modal>
     </div>
   );

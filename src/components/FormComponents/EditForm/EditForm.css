@@ -1,0 +1,157 @@
+:root {
+  --efb-color: #000000eb;
+  --efb-type-bg-color: #ffffff;
+  --fe-delete: #ffffff;
+  --fe-delte-border: #d6d6d6;
+  --fe-border: #d6d6d6;
+  --fe-icon-color: #1a5fff;
+  --fe-input-border: #d6d6d6;
+}
+
+[data-theme="dark"] {
+  --efb-color: #ffffffeb;
+  --efb-type-bg-color: #1f1f23;
+  --fe-delete: #444444;
+  --fe-delte-border: #444444;
+  --fe-border: #18181b;
+  --fe-icon-color: #ffffff;
+  --fe-input-border: #1f1f23;
+}
+.edit-form {
+  overflow: visible;
+  min-height: calc(100vh - 105px);
+  display: flex;
+}
+.ef-field-bar {
+  width: 344px;
+  margin: 20px;
+  background-color: var(--form-nav-bg-color);
+  min-height: calc(100vh - 105px);
+  box-shadow: 0px 10px 10px -5px #0000000a;
+  box-shadow: 0px 20px 25px -5px #0000001a;
+  border-radius: 6px;
+  border: 1px solid var(--form-nav-input-border);
+}
+.efb-container {
+  margin-top: 80px;
+  padding: 0 20px;
+  position: sticky;
+  top: 20px;
+}
+.efb-type > p,
+.efb-input-types > p {
+  color: var(--efb-color);
+  font-size: 14px;
+}
+.efb-bubble-icon {
+  color: #4b83ff;
+  font-size: 16px;
+  margin-right: 8px;
+}
+.efb-input-icon {
+  color: #ffa54c;
+  font-size: 16px;
+  margin-right: 8px;
+}
+.efb-bubbles > p:nth-child(1),
+.efb-inputs > p:nth-child(1) {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--efb-color);
+  margin: 20px 0;
+}
+.efb-types,
+.efb-input-container {
+  display: grid;
+  grid-template-columns: repeat(2, 149px);
+  grid-gap: 15px;
+  justify-content: center;
+}
+.efb-type,
+.efb-input-types {
+  display: flex;
+  align-items: center;
+  padding: 9px 17px;
+  border-radius: 8px;
+  height: 39px;
+  background-color: var(--efb-type-bg-color);
+  border: 1px solid var(--form-nav-input-border);
+  cursor: pointer;
+}
+.build-form {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 250px 0 20px;
+}
+.bf-start {
+  font-size: 20px;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  height: 60px;
+  width: 309px;
+  border-radius: 16px;
+  background-color: var(--form-nav-bg-color);
+  margin: 30px 0 50px;
+  border: 1px solid var(--fe-border);
+}
+.bfs-icon {
+  color: var(--fe-icon-color);
+}
+
+.field-element {
+  width: 315px;
+  border-radius: 8px;
+  background-color: var(--form-nav-bg-color);
+  padding: 15px;
+  color: var(--text-color);
+  position: relative;
+  border: 1px solid var(--fe-border);
+  margin-bottom: 30px;
+}
+.fe-delete {
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  font-size: 24px;
+  background-color: var(--fe-delete);
+  border: 1px solid var(--fe-delte-border);
+  padding: 5px;
+  color: #f82b60;
+  position: absolute;
+  top: -10px;
+  right: -15px;
+  cursor: pointer;
+}
+.field-element > p:nth-child(2) {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+.fe-input {
+  background-color: var(--im-input-bg-color);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  height: 45px;
+  padding-left: 15px;
+}
+.fe-input > input {
+  font-size: 14px;
+  color: var(--text-color);
+  background-color: transparent;
+  border: none;
+  outline: none;
+  margin-left: 5px;
+  width: 100%;
+}
+.fe-input > input::placeholder{
+    color: #84848454;
+}
+.fe-hint{
+    color: #555555;
+    font-size: 12px;
+    font-weight: 600;
+}

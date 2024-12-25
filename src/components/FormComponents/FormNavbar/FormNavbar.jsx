@@ -3,7 +3,7 @@ import ToggleSwitch from "../../Navbar/ToggleSwitch";
 import { IoCloseSharp } from "react-icons/io5";
 import "./FormNavbar.css";
 
-function FormNavbar({ currentTab, setCurrentTab }) {
+function FormNavbar({ currentTab, setCurrentTab, onSave }) {
   return (
     <div className="form-navbar open-sans">
       <div className="form-nav-input">
@@ -31,7 +31,7 @@ function FormNavbar({ currentTab, setCurrentTab }) {
         </div>
         <div className="fneb-btns">
           <button disabled>Share</button>
-          <button>Save</button>
+          <button onClick={() => onSave()}>Save</button>
           <IoCloseSharp className="fneb-close" />
         </div>
       </div>

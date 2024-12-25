@@ -2,16 +2,32 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import apiClient from "../../../utils/apiClient";
 import { toast } from "react-toastify";
 
-// Create a new form inside a workspace
 export const createForm = createAsyncThunk(
   "form/createForm",
-  async ({ workspaceId, formData }, { rejectWithValue }) => {
+  async ({ workspaceId, folderId, formData }, { rejectWithValue }) => {
     try {
-      const response = await apiClient.post(
-        `/workspaces/${workspaceId}/forms`,
-        formData
-      );
+      const url = folderId
+        ? `/form/${workspaceId}/${folderId}/create-form`
+        : `/form/${workspaceId}/create-form`;
+
+      const response = await apiClient.post(url, formData);
+
       return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || error.message);
+    }
+  }
+);
+
+export const deleteForm = createAsyncThunk(
+  "form/deleteForm",
+  async ({ formId, workspaceId }, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.delete(`/form/${formId}/delete-form`, {
+        data: { workspaceId }, 
+      });
+
+      return { formId, workspaceId }; 
     } catch (error) {
       return rejectWithValue(error.response?.data?.error || error.message);
     }
@@ -32,15 +48,41 @@ const formSlice = createSlice({
     setForms: (state, action) => {
       state.forms = action.payload;
     },
-    updateForm: (state, action) => {
-      const { workspaceId, formId, formData } = action.payload;
-      const form = state.forms.find(
-        (form) => form.id === formId && form.workspaceId === workspaceId
-      );
-      if (form) {
-        form.data = formData; // Update the form data
-      }
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(createForm.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createForm.fulfilled, (state, action) => {
+        state.loading = false;
+        state.forms.push(action.payload);
+        toast.success("Folder Created");
+      })
+      .addCase(createForm.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error(action.payload);
+      })
+      // Handle deleteForm action
+      .addCase(deleteForm.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteForm.fulfilled, (state, action) => {
+        state.loading = false;
+        // Filter out the deleted form from the state
+        state.forms = state.forms.filter(
+          (form) => form._id !== action.payload.formId
+        );
+        toast.success("Form Deleted");
+      })
+      .addCase(deleteForm.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error(action.payload);
+      });
   },
 });
 

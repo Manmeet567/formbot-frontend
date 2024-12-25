@@ -3,37 +3,49 @@ import { useDispatch, useSelector } from "react-redux";
 import { createForm } from "../../../redux/slices/formSlice";
 import { createFolder } from "../../../redux/slices/folderSlice";
 import "./CreateModal.css";
+import { toast } from "react-toastify";
 
 function CreateModal({ useFor, setIsModalOpen }) {
   const [inputValue, setInputValue] = useState("");
   const dispatch = useDispatch();
   const { activeWorkspace } = useSelector((state) => state.workspace);
+  const { activeFolder } = useSelector((state) => state.folder);
 
   const handleCreateFolder = () => {
     if (inputValue.trim() === "") {
-      alert("Folder title is required!");
+      toast.error("Folder title is required!");
       return;
     }
 
     const folderData = { title: inputValue };
-    dispatch(createFolder({ activeWorkspace: activeWorkspace?.workspaceId, folderData }));
+    dispatch(
+      createFolder({
+        activeWorkspace: activeWorkspace?.workspaceId,
+        folderData,
+      })
+    );
     setInputValue(""); // Clear the input after submission
     setIsModalOpen(false); // Close the modal
   };
 
   const handleCreateForm = () => {
     if (inputValue.trim() === "") {
-      alert("Form title is required!");
+      toast.error("Form title is required!");
       return;
     }
 
     const formData = { title: inputValue };
-    dispatch(createForm({ workspaceId, formData }));
-    setInputValue(""); // Clear the input after submission
-    setIsModalOpen(false); // Close the modal
+    dispatch(
+      createForm({
+        workspaceId: activeWorkspace?.workspaceId,
+        folderId: activeFolder,
+        formData,
+      })
+    );
+    setInputValue("");
+    setIsModalOpen(false);
   };
 
-  // Handle the form submission based on the `useFor` prop
   const handleSubmit = () => {
     if (useFor === "folder") {
       handleCreateFolder();

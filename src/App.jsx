@@ -52,6 +52,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/workspace" element={<Workspace />} />
             <Route path="/form/:formId" element={<Form />} />
+            <Route path="/form/:folderId/:formId" element={<Form />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/create-form" element={<div>form</div>} />
           </Route>
