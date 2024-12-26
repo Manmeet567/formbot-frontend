@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
+import './Response.css';
 
 function Response() {
   return (
-    <div>Response</div>
-  )
+    <div className="responses">
+      <div className="no-responses">
+        <p className="inter">No Response yet collected</p>
+      </div>
+    </div>
+  );
 }
 
-export default Response
+export default Response;

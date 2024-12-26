@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import apiClient from "../../../utils/apiClient";
 import { toast } from "react-toastify";
 
-// Existing createForm thunk
 export const createForm = createAsyncThunk(
   "form/createForm",
   async ({ workspaceId, folderId, formData }, { rejectWithValue }) => {
@@ -19,7 +18,6 @@ export const createForm = createAsyncThunk(
   }
 );
 
-// Existing deleteForm thunk
 export const deleteForm = createAsyncThunk(
   "form/deleteForm",
   async ({ formId, workspaceId }, { rejectWithValue }) => {
@@ -29,6 +27,23 @@ export const deleteForm = createAsyncThunk(
       });
 
       return { formId, workspaceId };
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || error.message);
+    }
+  }
+);
+
+export const getForm = createAsyncThunk(
+  "form/getForm",
+  async ({ workspaceId, folderId, formId }, { rejectWithValue }) => {
+    try {
+      const url = folderId
+        ? `/form/${workspaceId}/${folderId}/${formId}/get-form`
+        : `/form/${workspaceId}/${formId}/get-form`;
+
+      const response = await apiClient.get(url);
+
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.error || error.message);
     }
@@ -55,7 +70,6 @@ const formSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Existing createForm cases
       .addCase(createForm.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -87,6 +101,19 @@ const formSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         toast.error(action.payload);
+      })
+      .addCase(getForm.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getForm.fulfilled, (state, action) => {
+        state.loading = false;
+        state.activeForm = action.payload; 
+      })
+      .addCase(getForm.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        // toast.error(action.payload);
       });
   },
 });

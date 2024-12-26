@@ -49,7 +49,7 @@ const AuthForm = ({ type }) => {
       if (userData) {
         const redirectPath =
           location.state?.from ||
-          `/workspace/${userData?.workspaceAccess[0]}`;
+          `/workspace/${userData?.workspaceAccess[0]?._id}`;
         navigate(redirectPath);
       }
     } catch (err) {

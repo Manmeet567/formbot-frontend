@@ -7,7 +7,7 @@ const PublicRoute = () => {
   const token = localStorage.getItem('token');
 
   if (token && userData) {
-    return <Navigate to={`/workspace/${userData?.workspaceAccess[0]}`} />;
+    return <Navigate to={`/workspace/${userData?.workspaceAccess[0]?._id}`} />;
   }
 
   return <Outlet />;

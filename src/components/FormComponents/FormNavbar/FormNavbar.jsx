@@ -4,6 +4,9 @@ import { IoCloseSharp } from "react-icons/io5";
 import "./FormNavbar.css";
 
 function FormNavbar({ currentTab, setCurrentTab, onSave }) {
+
+  
+
   return (
     <div className="form-navbar open-sans">
       <div className="form-nav-input">
