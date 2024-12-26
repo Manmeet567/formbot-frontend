@@ -11,27 +11,20 @@ import PublicRoute from "./components/PrivateRoute/PublicRoute";
 import Workspace from "./pages/Workspace";
 import Settings from "./pages/Settings";
 import Form from "./pages/Form";
-import { setActiveWorkspace } from "./redux/slices/workspaceSlice";
+import Folder from "./pages/Folder";
 
 function App() {
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
 
   const { userData } = useSelector((state) => state.auth);
-  const { activeWorkspace } = useSelector((state) => state.workspace);
   useEffect(() => {
-    console.log(activeWorkspace);
-  }, [activeWorkspace]);
+    console.log(userData);
+  }, [userData]);
 
   useEffect(() => {
     if (token && !userData) {
       dispatch(fetchUserData()).unwrap();
-    }
-    if (userData) {
-      const ownedWorkspace = userData.workspaceAccess.find(
-        (workspace) => workspace.ownerId === userData._id
-      );
-      dispatch(setActiveWorkspace(ownedWorkspace));
     }
   }, [dispatch, token, userData]);
 
@@ -50,9 +43,13 @@ function App() {
 
           {/* Protected Routes */}
           <Route element={<PrivateRoute />}>
-            <Route path="/workspace" element={<Workspace />} />
-            <Route path="/form/:formId" element={<Form />} />
-            <Route path="/form/:folderId/:formId" element={<Form />} />
+            <Route path="/workspace/:workspaceId" element={<Workspace />} />
+            <Route path="/form/:workspaceId/:formId" element={<Form />} />
+            <Route
+              path="/form/:workspaceId/:folderId/:formId"
+              element={<Form />}
+            />
+            <Route path="/folder/:workspaceId/:folderId" element={<Folder />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/create-form" element={<div>form</div>} />
           </Route>

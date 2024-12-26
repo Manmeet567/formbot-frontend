@@ -38,7 +38,7 @@ function Form() {
       <FormNavbar
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
-        onSave={handleSubmitFlow} // Pass the function to the Navbar
+        onSave={handleSubmitFlow}
       />
       {currentTab === "flow" && <EditForm flow={flow} setFlow={setFlow} />}
       {currentTab === "response" && <Response />}

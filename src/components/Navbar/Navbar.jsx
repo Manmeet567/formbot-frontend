@@ -1,28 +1,49 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ToggleSwitch from "./ToggleSwitch";
 import "./Navbar.css";
 import InviteModal from "../InviteModal/InviteModal";
 import Modal from "../Modal/Modal";
-import { useSelector, useDispatch } from "react-redux"; // Import useDispatch
+import { useSelector, useDispatch } from "react-redux";
 import { FaAngleUp, FaAngleDown } from "react-icons/fa";
-import { logout } from "../../redux/slices/authSlice"; // Import the logout action
-import { Link } from "react-router-dom";
+import { logout } from "../../redux/slices/authSlice";
+import { Link, useNavigate } from "react-router-dom"; // added useNavigate to handle navigation
 
 function Navbar() {
-  const dispatch = useDispatch(); // Initialize useDispatch
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); // For programmatic navigation
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { userData } = useSelector((state) => state.auth);
-  const { activeWorkspace } = useSelector((state) => state.workspace);
+  const {activeWorkspace} = useSelector((state) => state.workspace);
+  const [openWorkspace, setOpenWorkspace] = useState(false);
+  const [activeName, setActiveName] = useState(null); 
+
+  useEffect(() => {
+    console.log("UserData: ", userData);
+    console.log("Active Workspace:", activeWorkspace)
+    // if (userData?.workspaceAccess?.[0]) {
+    //   setActiveWorkspace(userData.workspaceAccess[0]); // Set initial active workspace
+    // }
+    setActiveName(activeWorkspace?.ownerName);
+
+  }, [activeWorkspace]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  // State for controlling dropdown open/close
-  const [openWorkspace, setOpenWorkspace] = useState(false);
-
   const handleLogout = () => {
     setOpenWorkspace(false);
-    dispatch(logout()); // Dispatch the logout action
+    dispatch(logout());
+  };
+
+  const filteredWorkspaces =
+    userData?.workspaceAccess?.filter(
+      (workspace) => activeWorkspace?._id !== workspace?._id
+    ) || [];
+
+  const handleWorkspaceClick = (workspace) => {
+    // setActiveWorkspace(workspace);
+    setOpenWorkspace(false); // Close the dropdown
+    navigate(`/workspace/${workspace._id}`); // Navigate to the selected workspace
   };
 
   return (
@@ -33,7 +54,11 @@ function Navbar() {
       <div className="nv-workspace">
         <div
           className="nv-workspace-header"
-          onClick={() => setOpenWorkspace(!openWorkspace)}
+          onClick={() => {
+            if (activeWorkspace) {
+              setOpenWorkspace(!openWorkspace);
+            }
+          }}
           style={
             openWorkspace
               ? {
@@ -44,23 +69,28 @@ function Navbar() {
               : {}
           }
         >
-          <p>{activeWorkspace ? `${activeWorkspace.ownerName}'s Workspace` : "Loading..."}</p>
+          <p>{activeWorkspace ? `${activeName}'s Workspace` : "Loading..."}</p>
           {openWorkspace ? <FaAngleUp /> : <FaAngleDown />}
         </div>
         {openWorkspace && (
           <div className="nv-workspace-options">
-            {userData?.workspaceAccess.map((workspace) => {
-              activeWorkspace?.workspaceId !== workspace?._id && (
-                <div
-                  style={{
-                    borderBottom: "1px solid var(--nav-border-color)",
-                    color: "var(--nav-text-color)",
-                  }}
-                >
-                  {workspace?.ownerName}'s Workspace
-                </div>
-              );
-            })}
+            {filteredWorkspaces?.map((workspace) => (
+              <div
+                key={workspace?._id}
+                style={{
+                  borderBottom: "1px solid var(--nav-border-color)",
+                  color: "var(--nav-text-color)",
+                  cursor: "pointer",
+                }}
+                onClick={() => handleWorkspaceClick(workspace)} // Handle click
+              >
+                <p style={{ color: "var(--nav-text-color)" }}>
+                  {workspace?.ownerName
+                    ? `${workspace?.ownerName}'s Workspace`
+                    : "Loading..."}
+                </p>
+              </div>
+            ))}
             <Link to="/settings">
               <div
                 style={{

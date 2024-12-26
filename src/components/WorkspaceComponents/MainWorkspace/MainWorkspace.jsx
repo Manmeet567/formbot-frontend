@@ -6,42 +6,59 @@ import { FaPlus } from "react-icons/fa6";
 import Modal from "../../Modal/Modal";
 import CreateModal from "../CreateModal/CreateModal";
 import { useSelector, useDispatch } from "react-redux";
-import { setWorkspace } from "../../../redux/slices/workspaceSlice";
-import { setfolders } from "../../../redux/slices/folderSlice";
-import { setForms } from "../../../redux/slices/formSlice";
-import apiClient from "../../../../utils/apiClient";
-import { deleteFolder } from "../../../redux/slices/folderSlice";
-import { deleteForm } from "../../../redux/slices/formSlice";
+import {
+  setActiveWorkspace,
+  setPermission,
+} from "../../../redux/slices/workspaceSlice";
+import { setfolders, setActiveFolder } from "../../../redux/slices/folderSlice";
 import DeleteModal from "../DeleteModal/DeleteModal";
+import { useNavigate, useParams } from "react-router-dom";
+import apiClient from "../../../../utils/apiClient";
+import { setForms } from "../../../redux/slices/formSlice";
+import { Link } from "react-router-dom";
 
 function MainWorkspace() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { userData } = useSelector((state) => state.auth);
-  const { activeWorkspace, workspace } = useSelector(
+  const { activeWorkspace, permission } = useSelector(
     (state) => state.workspace
   );
-  const { folders } = useSelector((state) => state.folder);
-
+  const { folders, activeFolder } = useSelector((state) => state.folder);
   const { forms } = useSelector((state) => state.form);
 
+  const { workspaceId } = useParams();
   useEffect(() => {
-    const fetchWorkspace = async () => {
-      if (userData && activeWorkspace) {
-        try {
-          const response = await apiClient.get(
-            `/workspace/${activeWorkspace?.workspaceId}/get-workspace`
-          );
-          dispatch(setWorkspace(response?.data?.workspace));
-          dispatch(setfolders(response?.data?.folders));
-          dispatch(setForms(response?.data?.forms));
-        } catch (error) {
-          console.log(error);
-        }
+    const fetchSingleWorkspace = async () => {
+      try {
+        const response = await apiClient.get(
+          `/workspace/${workspaceId}/get-workspace`
+        );
+        dispatch(setActiveWorkspace(response?.data?.workspace));
+        dispatch(setPermission(response?.data?.workspace?.permission));
+        dispatch(setfolders(response?.data?.folders));
+        dispatch(setForms(response?.data?.forms));
+        return;
+      } catch (error) {
+        console.log(error);
       }
     };
 
-    fetchWorkspace();
-  }, [activeWorkspace]);
+    if (!activeWorkspace || activeWorkspace._id !== workspaceId) {
+      fetchSingleWorkspace();
+    }
+  }, [workspaceId, activeWorkspace, dispatch]);
+
+  const filteredForms = activeFolder
+    ? forms
+    : forms?.filter(
+        (form) => !form.folderId && form.workspaceId === activeWorkspace?._id
+      );
+
+  const handleFolderClick = (folder) => {
+    dispatch(setActiveFolder(folder));
+    navigate(`/folder/${workspaceId}/${folder._id}`);
+  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
@@ -53,19 +70,9 @@ function MainWorkspace() {
   const openDeleteModal = () => setIsDeleteModal(true);
   const closeDeleteModal = () => setIsDeleteModal(false);
 
-  const handleFolderDelete = (folderId) => {
-    const workspaceId = activeWorkspace?.workspaceId;
-    dispatch(deleteFolder({ folderId, workspaceId }));
-  };
-
-  const handleFormDelete = (formId) => {
-    const workspaceId = activeWorkspace?.workspaceId;
-    dispatch(deleteForm({ formId, workspaceId }));
-  };
-
   return (
     <div className="main-workspace">
-      {!workspace && (
+      {!activeWorkspace && (
         <p
           className="poppins"
           style={{ fontSize: "30px", color: "var(--text-color)" }}
@@ -73,69 +80,84 @@ function MainWorkspace() {
           Loading...
         </p>
       )}
-      {workspace && (
+      {activeWorkspace && (
         <>
           <div className="mw-folders open-sans">
-            <div
-              className="mwf-create"
-              onClick={() => {
-                setUseFor("folder");
-                openModal();
-              }}
-            >
-              <AiOutlineFolderAdd style={{ fontSize: "20px" }} />
-              <span>Create a folder</span>
-            </div>
+            {activeWorkspace && permission === "edit" && (
+              <div
+                className="mwf-create"
+                onClick={() => {
+                  setUseFor("folder");
+                  openModal();
+                }}
+              >
+                <AiOutlineFolderAdd style={{ fontSize: "20px" }} />
+                <span>Create a folder</span>
+              </div>
+            )}
             {folders?.length !== 0 &&
               folders.map((folder) => (
-                <div className="mwf-folder" key={folder?._id}>
+                <div
+                  className="mwf-folder"
+                  key={folder._id}
+                  onClick={() => handleFolderClick(folder)}
+                >
                   <span>{folder?.title}</span>
-                  <RiDeleteBin6Line
-                    className="mwf-delete"
-                    onClick={() => {
-                      setDeleteFor("folder");
-                      setDeleteId(folder?._id);
-                      openDeleteModal();
-                    }}
-                    title="Delete Folder"
-                  />
+                  {activeWorkspace && permission === "edit" && (
+                    <RiDeleteBin6Line
+                      className="mwf-delete"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDeleteFor("folder");
+                        setDeleteId(folder?._id);
+                        openDeleteModal();
+                      }}
+                      title="Delete Folder"
+                    />
+                  )}
                 </div>
               ))}
           </div>
-          <div className="mw-forms open-sans">
-            <div
-              className="mwf-create-form"
-              onClick={() => {
-                setUseFor("form");
-                openModal();
-              }}
-            >
-              <FaPlus style={{ fontSize: "40px" }} />
-              <p>Create a typebot</p>
-            </div>
-            {forms?.length !== 0 &&
-              forms.map((form) => (
-                <div className="mwf-form" key={form?._id}>
-                  <p>{form?.title}</p>
-                  <RiDeleteBin6Line
-                    style={{
-                      fontSize: "24px",
-                      position: "absolute",
-                      top: "-10px",
-                      right: "-10px",
-                      color: "#f55050",
-                      cursor: "pointer",
-                    }}
-                    title="Delete Form"
-                    onClick={() => {
-                      // handleFormDelete(form?._id);
 
-                      setDeleteFor("form");
-                      setDeleteId(form?._id)
-                      openDeleteModal();
-                    }}
-                  />
-                </div>
+          <div className="mw-forms open-sans">
+            {activeWorkspace && permission === "edit" && (
+              <div
+                className="mwf-create-form"
+                onClick={() => {
+                  setUseFor("form");
+                  openModal();
+                }}
+              >
+                <FaPlus style={{ fontSize: "40px" }} />
+                <p>Create a typebot</p>
+              </div>
+            )}
+
+            {filteredForms?.length !== 0 &&
+              filteredForms.map((form) => (
+                <Link to={`/form/${workspaceId}/${form?._id}`} key={form._id}>
+                  <div className="mwf-form">
+                    <p>{form?.title}</p>
+                    {activeWorkspace && permission === "edit" && (
+                      <RiDeleteBin6Line
+                        style={{
+                          fontSize: "24px",
+                          position: "absolute",
+                          top: "-10px",
+                          right: "-10px",
+                          color: "#f55050",
+                          cursor: "pointer",
+                        }}
+                        title="Delete Form"
+                        onClick={() => {
+                          setDeleteFor("form");
+                          setDeleteId(form?._id);
+                          openDeleteModal();
+                        }}
+                      />
+                    )}
+                  </div>
+                </Link>
               ))}
           </div>
         </>
@@ -145,7 +167,11 @@ function MainWorkspace() {
       </Modal>
 
       <Modal isOpen={isDeleteModal} onClose={closeDeleteModal} center={false}>
-        <DeleteModal deleteFor={deleteFor} setIsDeleteModal = {setIsDeleteModal} deleteId = {deleteId}  />
+        <DeleteModal
+          deleteFor={deleteFor}
+          setIsDeleteModal={setIsDeleteModal}
+          deleteId={deleteId}
+        />
       </Modal>
     </div>
   );

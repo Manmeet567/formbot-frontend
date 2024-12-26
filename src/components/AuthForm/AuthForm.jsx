@@ -48,7 +48,8 @@ const AuthForm = ({ type }) => {
       // Get the redirect path from the location state or default to '/workspace'
       if (userData) {
         const redirectPath =
-          location.state?.from || `/workspace`;
+          location.state?.from ||
+          `/workspace/${userData?.workspaceAccess[0]}`;
         navigate(redirectPath);
       }
     } catch (err) {

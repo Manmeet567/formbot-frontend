@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createForm } from "../../../redux/slices/formSlice";
 import { createFolder } from "../../../redux/slices/folderSlice";
 import "./CreateModal.css";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 function CreateModal({ useFor, setIsModalOpen }) {
   const [inputValue, setInputValue] = useState("");
   const dispatch = useDispatch();
-  const { activeWorkspace } = useSelector((state) => state.workspace);
-  const { activeFolder } = useSelector((state) => state.folder);
+  const { workspaceId, folderId } = useParams();
 
   const handleCreateFolder = () => {
     if (inputValue.trim() === "") {
@@ -20,12 +20,12 @@ function CreateModal({ useFor, setIsModalOpen }) {
     const folderData = { title: inputValue };
     dispatch(
       createFolder({
-        activeWorkspace: activeWorkspace?.workspaceId,
+        workspaceId,
         folderData,
       })
     );
-    setInputValue(""); // Clear the input after submission
-    setIsModalOpen(false); // Close the modal
+    setInputValue("");
+    setIsModalOpen(false);
   };
 
   const handleCreateForm = () => {
@@ -37,8 +37,8 @@ function CreateModal({ useFor, setIsModalOpen }) {
     const formData = { title: inputValue };
     dispatch(
       createForm({
-        workspaceId: activeWorkspace?.workspaceId,
-        folderId: activeFolder,
+        workspaceId,
+        folderId,
         formData,
       })
     );
