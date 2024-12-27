@@ -186,8 +186,8 @@ function EditForm({flow, setFlow}) {
                 >
                   <FiMessageSquare className="efb-bubble-icon" />
                   <input
-                    type="text"
-                    placeholder="Click here to edit"
+                    type={item.field === "Text" ? "text" : "url"}
+                    placeholder={item.field === "Text" ? "Enter text" : "Enter image link"}
                     value={item.fieldValue}
                     onChange={(e) => updateFieldValue(index, e.target.value)}
                   />
