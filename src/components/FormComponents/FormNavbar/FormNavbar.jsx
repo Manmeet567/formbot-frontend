@@ -2,10 +2,12 @@ import React from "react";
 import ToggleSwitch from "../../Navbar/ToggleSwitch";
 import { IoCloseSharp } from "react-icons/io5";
 import "./FormNavbar.css";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function FormNavbar({ currentTab, setCurrentTab, onSave }) {
-
-  
+  const navigate = useNavigate();
+  const { activeForm } = useSelector((state) => state.form);
 
   return (
     <div className="form-navbar open-sans">
@@ -33,9 +35,16 @@ function FormNavbar({ currentTab, setCurrentTab, onSave }) {
           <p>Dark</p>
         </div>
         <div className="fneb-btns">
-          <button disabled>Share</button>
-          <button onClick={() => onSave()}>Save</button>
-          <IoCloseSharp className="fneb-close" />
+          <button disabled={activeForm?.flow?.length != 0 ? false : true}>Share</button>
+          {activeForm?.permission === "edit" && (
+            <>
+              <button onClick={() => onSave()}>Save</button>
+              <IoCloseSharp
+                onClick={() => navigate(-1)}
+                className="fneb-close"
+              />
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import apiClient from "../../../utils/apiClient";
 import { toast } from "react-toastify";
 
+// Create a form
 export const createForm = createAsyncThunk(
   "form/createForm",
   async ({ workspaceId, folderId, formData }, { rejectWithValue }) => {
@@ -18,6 +19,7 @@ export const createForm = createAsyncThunk(
   }
 );
 
+// Delete a form
 export const deleteForm = createAsyncThunk(
   "form/deleteForm",
   async ({ formId, workspaceId }, { rejectWithValue }) => {
@@ -33,6 +35,7 @@ export const deleteForm = createAsyncThunk(
   }
 );
 
+// Get a form
 export const getForm = createAsyncThunk(
   "form/getForm",
   async ({ workspaceId, folderId, formId }, { rejectWithValue }) => {
@@ -42,6 +45,22 @@ export const getForm = createAsyncThunk(
         : `/form/${workspaceId}/${formId}/get-form`;
 
       const response = await apiClient.get(url);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || error.message);
+    }
+  }
+);
+
+// Update flow of a form
+export const updateFlow = createAsyncThunk(
+  "form/updateFlow",
+  async ({ formId, flow }, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.put(`/form/${formId}/update-flow`, {
+        flow,
+      });
 
       return response.data;
     } catch (error) {
@@ -70,6 +89,7 @@ const formSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Create form cases
       .addCase(createForm.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -85,7 +105,7 @@ const formSlice = createSlice({
         toast.error(action.payload);
       })
 
-      // Existing deleteForm cases
+      // Delete form cases
       .addCase(deleteForm.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -102,18 +122,37 @@ const formSlice = createSlice({
         state.error = action.payload;
         toast.error(action.payload);
       })
+
+      // Get form cases
       .addCase(getForm.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(getForm.fulfilled, (state, action) => {
         state.loading = false;
-        state.activeForm = action.payload; 
+        state.activeForm = action.payload;
       })
       .addCase(getForm.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        // toast.error(action.payload);
+      })
+
+      // Update flow cases
+      .addCase(updateFlow.pending, (state) => {
+        // state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateFlow.fulfilled, (state, action) => {
+        state.loading = false;
+        if (state.activeForm && state.activeForm._id === action.payload._id) {
+          state.activeForm.flow = action.payload.updatedFlow;
+        }
+        toast.success("Flow Updated");
+      })
+      .addCase(updateFlow.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error(action.payload);
       });
   },
 });

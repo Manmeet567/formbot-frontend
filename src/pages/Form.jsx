@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import FormNavbar from "../components/FormComponents/FormNavbar/FormNavbar";
 import EditForm from "../components/FormComponents/EditForm/EditForm";
 import Response from "../components/FormComponents/Response/Response";
-import { getForm } from "../redux/slices/formSlice";
+import { getForm, updateFlow } from "../redux/slices/formSlice";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -17,6 +17,10 @@ function Form() {
   useEffect(() => {
     dispatch(getForm({ workspaceId, folderId, formId }));
   }, []);
+
+  useEffect(() => {
+    setFlow(activeForm?.flow);
+  }, [activeForm]);
 
   const handleSubmitFlow = () => {
     if (flow.length === 0) {
@@ -39,8 +43,16 @@ function Form() {
       toast.error("Flow must contain at least one button input element!");
       return;
     }
+    const flowChanged =
+      JSON.stringify(flow) !== JSON.stringify(activeForm?.flow);
+
+    if (!flowChanged) {
+      toast.error("Flow hasn't changed");
+      return;
+    }
 
     console.log("Flow submitted:", flow);
+    dispatch(updateFlow({ formId: formId, flow }));
   };
 
   return (

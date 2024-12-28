@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FiMessageSquare, FiCalendar, FiTrash2 } from "react-icons/fi";
 import { IoImageOutline, IoFilmOutline } from "react-icons/io5";
 import { IoIosStarOutline } from "react-icons/io";
@@ -10,6 +10,7 @@ import { GoHash } from "react-icons/go";
 import { TbCheckbox, TbGif } from "react-icons/tb";
 import { toast } from "react-toastify";
 import "./EditForm.css";
+import { useSelector } from "react-redux";
 
 const inputOptions = {
   bubbles: [
@@ -63,13 +64,17 @@ const inputOptions = {
   ],
 };
 
-function EditForm({flow, setFlow}) {
+function EditForm({ flow, setFlow }) {
+  const { activeForm } = useSelector((state) => state.form);
+
+  useEffect(() => {
+    console.log("ActiveForm: ", activeForm);
+  }, [activeForm]);
 
   const addBoxToFlow = (boxType, fieldType) => {
-    if (
-      boxType === "Button" &&
-      flow.some((item) => item.field === "Button")
-    ) {
+    if (activeForm?.permission !== "edit") return;
+
+    if (boxType === "Button" && flow.some((item) => item.field === "Button")) {
       toast.error("You can only add one 'Buttons' input.");
       return;
     }
@@ -94,14 +99,20 @@ function EditForm({flow, setFlow}) {
   };
 
   const removeBoxFromFlow = (index) => {
+    if (activeForm?.permission !== "edit") return;
     const updatedFlow = [...flow];
     updatedFlow.splice(index, 1);
     setFlow(updatedFlow);
   };
 
   const updateFieldValue = (index, value) => {
+    if (activeForm?.permission !== "edit") return;
+    // Create a shallow copy of the flow array
     const updatedFlow = [...flow];
-    updatedFlow[index].fieldValue = value;
+    // Create a shallow copy of the specific item to update
+    const updatedField = { ...updatedFlow[index], fieldValue: value };
+    // Replace the updated item in the copied array
+    updatedFlow[index] = updatedField;
     setFlow(updatedFlow);
   };
 
@@ -167,12 +178,14 @@ function EditForm({flow, setFlow}) {
           <span>Start</span>
         </div>
 
-        {flow.map((item, index) => (
+        {flow?.map((item, index) => (
           <div className="field-element open-sans" key={index}>
-            <FiTrash2
-              className="fe-delete"
-              onClick={() => removeBoxFromFlow(index)}
-            />
+            {activeForm?.permission === "edit" && (
+              <FiTrash2
+                className="fe-delete"
+                onClick={() => removeBoxFromFlow(index)}
+              />
+            )}
             <p>{item.field}</p>
             {item.type === "bubble" ? (
               <>
@@ -187,9 +200,12 @@ function EditForm({flow, setFlow}) {
                   <FiMessageSquare className="efb-bubble-icon" />
                   <input
                     type={item.field === "Text" ? "text" : "url"}
-                    placeholder={item.field === "Text" ? "Enter text" : "Enter image link"}
+                    placeholder={
+                      item.field === "Text" ? "Enter text" : "Enter image link"
+                    }
                     value={item.fieldValue}
                     onChange={(e) => updateFieldValue(index, e.target.value)}
+                    disabled={activeForm?.permission !== "edit"}
                   />
                 </div>
                 {!item.fieldValue && (
@@ -207,37 +223,23 @@ function EditForm({flow, setFlow}) {
                 )}
               </>
             ) : item.field === "Button" ? (
-              <>
-                <div
-                  className="fe-input"
-                  style={
-                    !item.fieldValue
-                      ? { border: "1px solid #F55050" }
-                      : { border: "1px solid var(--fe-input-border)" }
-                  }
-                >
-                  <TbCheckbox className="efb-input-icon" />
-                  <input
-                    type="text"
-                    placeholder="Name your submit function"
-                    value={item.fieldValue || ""}
-                    onChange={(e) => updateFieldValue(index, e.target.value)}
-                  />
-                </div>
-                {!item.fieldValue && (
-                  <p
-                    className="poppins"
-                    style={{
-                      color: "#522224",
-                      fontSize: "10.43px",
-                      fontWeight: "500",
-                      marginTop: "5px",
-                    }}
-                  >
-                    Required Field
-                  </p>
-                )}
-              </>
+              <div
+                className="fe-input"
+                style={
+                  !item.fieldValue
+                    ? { border: "1px solid #F55050" }
+                    : { border: "1px solid var(--fe-input-border)" }
+                }
+              >
+                <TbCheckbox className="efb-input-icon" />
+                <input
+                  type="text"
+                  placeholder="Name your submit function"
+                  value={item.fieldValue || ""}
+                  onChange={(e) => updateFieldValue(index, e.target.value)}
+                  disabled={activeForm?.permission !== "edit"}
+                />
+              </div>
             ) : (
               <p className="fe-hint">
                 Hint: User will input a {item.field} on their form
