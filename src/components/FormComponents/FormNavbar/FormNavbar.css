@@ -39,9 +39,9 @@
 .fn-btns > button:nth-child(1) {
   margin-right: 10px;
 }
-.fn-btns{
-    display: flex;
-    align-items: center;
+.fn-btns {
+  display: flex;
+  align-items: center;
 }
 .fn-btn {
   background-color: transparent;
@@ -65,55 +65,71 @@
   padding: 7.2px 13px 8px 13px;
   cursor: pointer;
 }
-.fnb-response{
-    border: 1px solid #444444;
-    border-radius: 6px;
-    color: #4B83FF;
-    font-size: 14px;
-    background-color: transparent;
-    font-weight: 600;
-    padding: 7.2px 13px 8px 13px;
+.fnb-response {
+  border: 1px solid #444444;
+  border-radius: 6px;
+  color: #4b83ff;
+  font-size: 14px;
+  background-color: transparent;
+  font-weight: 600;
+  padding: 7.2px 13px 8px 13px;
 }
-.fn-end-btns{
-    display: flex;
-    align-items: center;
+.fn-end-btns {
+  display: flex;
+  align-items: center;
 }
-.fneb-btns{
-    display: flex;
-    align-items: center;
+.fneb-btns {
+  display: flex;
+  align-items: center;
+  position: relative;
 }
-.fneb-btns > button:nth-child(1){
-    background-color: #1A5FFF;
-    color: #fff;
-    border-radius: 4px;
-    width: 65px;
-    padding: 8px 0;
-    font-size: 14px;
-    font-weight: 600;
-    border: none;
-    outline: none;
-    margin-right: 20px;
-    cursor: pointer;
+.fneb-btns > button:nth-child(1) {
+  background-color: #1a5fff;
+  color: #fff;
+  border-radius: 4px;
+  width: 65px;
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  margin-right: 20px;
+  cursor: pointer;
 }
-.fneb-btns > button:nth-child(1):disabled{
-    background-color: #848890;
-    cursor: not-allowed;
+.fneb-btns > button:nth-child(1):disabled {
+  background-color: #848890;
+  cursor: not-allowed;
 }
-.fneb-btns > button:nth-child(2){
-    background-color: #4ADE80CC;
-    color: #fff;
-    border-radius: 4px;
-    width: 65px;
-    padding: 8px 0;
-    font-size: 14px;
-    font-weight: 600;
-    border: none;
-    outline: none;
-    margin-right: 20px;
-    cursor: pointer;
+.fneb-btns > button:nth-child(2) {
+  background-color: #4ade80cc;
+  color: #fff;
+  border-radius: 4px;
+  width: 65px;
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  margin-right: 20px;
+  cursor: pointer;
 }
-.fneb-close{
-    color: #F55050;
-    font-size: 24px;
-    cursor: pointer;
+.fneb-close {
+  color: #f55050;
+  font-size: 24px;
+  cursor: pointer;
+}
+.copied-bubble {
+  width: 116.39px;
+  height: 34.39px;
+  border-radius: 3.97px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--form-nav-bg-color);
+  border: 1.32px solid var(--nav-border-color);
+  color: var(--nav-text-color);
+  font-size: 12.51px;
+  position: absolute;
+  bottom: -60px;
+  left: -20px;
 }

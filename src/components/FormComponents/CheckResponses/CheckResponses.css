@@ -1,4 +1,4 @@
-.responses {
+.check-responses {
   width: 100%;
 }
 .no-responses {
@@ -8,5 +8,4 @@
     justify-content: center;
     color: #69696973;
     font-size: 36px;
-    
 }

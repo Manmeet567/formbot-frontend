@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import FormNavbar from "../components/FormComponents/FormNavbar/FormNavbar";
 import EditForm from "../components/FormComponents/EditForm/EditForm";
-import Response from "../components/FormComponents/Response/Response";
+import CheckResponses from "../components/FormComponents/CheckResponses/CheckResponses";
 import { getForm, updateFlow } from "../redux/slices/formSlice";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -77,7 +77,7 @@ function Form() {
             onSave={handleSubmitFlow}
           />
           {currentTab === "flow" && <EditForm flow={flow} setFlow={setFlow} />}
-          {currentTab === "response" && <Response />}
+          {currentTab === "response" && <CheckResponses />}
         </>
       ) : (
         <p

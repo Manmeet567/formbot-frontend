@@ -1,9 +1,9 @@
 import React from "react";
-import './Response.css';
+import "./CheckResponses.css";
 
-function Response() {
+function CheckResponses() {
   return (
-    <div className="responses">
+    <div className="check-responses">
       <div className="no-responses">
         <p className="inter">No Response yet collected</p>
       </div>
@@ -11,4 +11,4 @@ function Response() {
   );
 }
 
-export default Response;
+export default CheckResponses;

@@ -42,6 +42,8 @@ function HomeComponent() {
           src="https://res.cloudinary.com/dianvv6lu/image/upload/v1734689574/image_zcprj1.png"
           alt=""
         />
+        <div className="hh-img-orange-circle"></div>
+        <div className="hh-img-blue-circle"></div>
       </div>
 
       <footer>
@@ -50,7 +52,10 @@ function HomeComponent() {
             <img src={logo} alt="" />
             <p className="outfit">FormBot</p>
           </div>
-          <p className="open-sans">Made with ❤️ by <u style={{textDecoration:"underline"}}>@ManmeetSingh</u></p>
+          <p className="open-sans">
+            Made with ❤️ by{" "}
+            <u style={{ textDecoration: "underline" }}>@ManmeetSingh</u>
+          </p>
         </div>
         <div className="footer-links">
           <p>Product</p>

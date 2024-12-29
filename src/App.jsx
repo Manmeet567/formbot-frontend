@@ -12,6 +12,7 @@ import Workspace from "./pages/Workspace";
 import Settings from "./pages/Settings";
 import Form from "./pages/Form";
 import Folder from "./pages/Folder";
+import Response from "./pages/Response";
 
 function App() {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
-
+          <Route path="/response/:formId" element={<Response />} />
           {/* Restrict /login and /signup for authenticated users */}
           <Route element={<PublicRoute />}>
             <Route path="/login" element={<Login />} />

@@ -48,6 +48,12 @@
 .home-hero {
   width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+.home-hero > img{
+  position: relative;
+  z-index: 2;
 }
 .hh-info {
   display: flex;
@@ -142,4 +148,25 @@
 }
 .fl-links > p{
     margin-bottom: 10px;
+}
+.hh-img-orange-circle, .hh-img-blue-circle{
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  z-index: 1;
+  border-radius: 50%;
+}
+.hh-img-orange-circle {
+  bottom: 80px;
+  background-color: #E67200;
+  filter: blur(40px); /* Apply blur to the whole circle */
+  left: -30px;
+  border-radius: 50%;
+}
+.hh-img-blue-circle {
+  bottom: 80px;
+  background-color: #0042DA;
+  filter: blur(40px); 
+  right: -30px;
+  border-radius: 50%;
 }
