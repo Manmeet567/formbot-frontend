@@ -47,7 +47,7 @@ function MainWorkspace() {
     if (!activeWorkspace || activeWorkspace._id !== workspaceId) {
       fetchSingleWorkspace();
     }
-  }, [workspaceId, activeWorkspace, dispatch]);
+  }, [workspaceId, activeWorkspace,dispatch]);
 
   const filteredForms = activeFolder
     ? forms

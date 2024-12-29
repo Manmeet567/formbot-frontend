@@ -159,7 +159,7 @@
 .hh-img-orange-circle {
   bottom: 80px;
   background-color: #E67200;
-  filter: blur(40px); /* Apply blur to the whole circle */
+  filter: blur(40px);
   left: -30px;
   border-radius: 50%;
 }

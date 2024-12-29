@@ -5,8 +5,9 @@ import { MdLogout } from "react-icons/md";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUser } from "../../redux/slices/authSlice";
-import './SettingsComponent.css';
+import "./SettingsComponent.css";
 import { logout } from "../../redux/slices/authSlice";
+import { updateOwnerName } from "../../redux/slices/workspaceSlice";
 
 function SettingsComponent() {
   const { userData } = useSelector((state) => state.auth);
@@ -48,10 +49,11 @@ function SettingsComponent() {
     };
 
     dispatch(updateUser(updatedData));
+    dispatch(updateOwnerName({ userId: userData?._id, userName: name }));
   };
 
   const handleLogout = () => {
-    dispatch(logout()); 
+    dispatch(logout());
   };
 
   return (
@@ -108,7 +110,7 @@ function SettingsComponent() {
       </form>
 
       <div className="settings-logout poppins" onClick={handleLogout}>
-        <MdLogout style={{fontSize:"20px", marginRight:"10px"}} />
+        <MdLogout style={{ fontSize: "20px", marginRight: "10px" }} />
         <span>Log out</span>
       </div>
     </div>

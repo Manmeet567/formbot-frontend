@@ -126,6 +126,9 @@ function MainFolder() {
               </div>
             </Link>
           ))}
+        {filteredForms?.length === 0 && permission === "view" && (
+          <p style={{ color: "var(--text-color)" }}>No forms found</p>
+        )}
       </div>
 
       <Modal isOpen={isModalOpen} onClose={closeModal} center={false}>

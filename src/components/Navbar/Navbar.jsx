@@ -20,9 +20,6 @@ function Navbar() {
   useEffect(() => {
     console.log("UserData: ", userData);
     console.log("Active Workspace:", activeWorkspace)
-    // if (userData?.workspaceAccess?.[0]) {
-    //   setActiveWorkspace(userData.workspaceAccess[0]); // Set initial active workspace
-    // }
     setActiveName(activeWorkspace?.ownerName);
 
   }, [activeWorkspace]);
@@ -41,9 +38,9 @@ function Navbar() {
     ) || [];
 
   const handleWorkspaceClick = (workspace) => {
-    // setActiveWorkspace(workspace);
-    setOpenWorkspace(false); // Close the dropdown
-    navigate(`/workspace/${workspace._id}`); // Navigate to the selected workspace
+    
+    setOpenWorkspace(false);
+    navigate(`/workspace/${workspace._id}`); 
   };
 
   return (
