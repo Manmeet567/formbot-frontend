@@ -78,6 +78,17 @@ const authSlice = createSlice({
       state.error = null;
       localStorage.removeItem("token");
     },
+    addNewWorkspace: (state, action) => {
+      const { ownerName, workspaceId } = action.payload;
+
+      // Check if userData exists
+      if (state.userData) {
+        state.userData.workspaceAccess.push({
+          _id: workspaceId,
+          ownerName: ownerName,
+        });
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -131,7 +142,7 @@ const authSlice = createSlice({
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.userData = action.payload
+        state.userData = action.payload;
         toast.success("User updated successfully");
       })
       .addCase(updateUser.rejected, (state, action) => {
@@ -142,5 +153,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, addNewWorkspace } = authSlice.actions;
 export default authSlice.reducer;

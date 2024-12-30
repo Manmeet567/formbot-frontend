@@ -13,6 +13,7 @@ import Settings from "./pages/Settings";
 import Form from "./pages/Form";
 import Folder from "./pages/Folder";
 import Response from "./pages/Response";
+import ShareWorkspace from "./pages/ShareWorkspace";
 
 function App() {
   const dispatch = useDispatch();
@@ -52,7 +53,7 @@ function App() {
             />
             <Route path="/folder/:workspaceId/:folderId" element={<Folder />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/create-form" element={<div>form</div>} />
+            <Route path="/share-workspace/:inviteToken" element={<ShareWorkspace />} />
           </Route>
 
           <Route path="*" element={<div>Page not found</div>} />

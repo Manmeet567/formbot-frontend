@@ -5,16 +5,16 @@ import { useDispatch } from "react-redux";
 import { addSharedUser } from "../../redux/slices/workspaceSlice";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import apiClient from "../../../utils/apiClient";
 
 function InviteModal({ setIsModalOpen }) {
   const dispatch = useDispatch();
   const { workspaceId } = useParams();
+  const [inviteLoading, setInviteLoading] = useState(false);
 
-  // State to track email and permission
   const [email, setEmail] = useState("");
-  const [permission, setPermission] = useState("view"); // default permission is "view"
+  const [permission, setPermission] = useState("view");
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -28,7 +28,37 @@ function InviteModal({ setIsModalOpen }) {
       setIsModalOpen(false);
     } catch (error) {
       toast.error("Failed to send invite. Please try again.");
-      console.log(error)
+      console.log(error);
+    }
+  };
+
+  const handleCopyLink = async () => {
+    try {
+      setInviteLoading(true);
+      const response = await apiClient.post(
+        `/workspace/${workspaceId}/generate-invite`,
+        { permission }
+      );
+      setInviteLoading(false);
+      const inviteToken = response.data.token;
+
+      const inviteLink = `${
+        import.meta.env.VITE_CLIENT_BASE_URL
+      }/share-workspace/${inviteToken}`;
+
+      navigator.clipboard
+        .writeText(inviteLink)
+        .then(() => {
+          toast.success("Invite link copied to clipboard!");
+        })
+        .catch((err) => {
+          toast.error("Failed to copy link. Please try again.");
+          console.error("Error copying invite link: ", err);
+        });
+    } catch (err) {
+      setInviteLoading(false);
+      toast.error("Failed to generate invite link.");
+      console.error("Error generating invite link:", err);
     }
   };
 
@@ -49,7 +79,7 @@ function InviteModal({ setIsModalOpen }) {
         <p className="im-text">Invite by Email</p>
         <select
           value={permission}
-          onChange={(e) => setPermission(e.target.value)} 
+          onChange={(e) => setPermission(e.target.value)}
         >
           <option value="edit">Edit</option>
           <option value="view">View</option>
@@ -61,13 +91,19 @@ function InviteModal({ setIsModalOpen }) {
           placeholder="Enter email id"
           className="open-sans"
           value={email}
-          onChange={(e) => setEmail(e.target.value)} // Update email state
+          onChange={(e) => setEmail(e.target.value)}
         />
         <button className="im-btn poppins" onClick={handleSubmit}>
           Send Invite
         </button>
         <p className="im-text open-sans">Invite by link</p>
-        <button className="im-btn poppins">Copy link</button>
+        <button
+          className="im-btn poppins"
+          disabled={inviteLoading ? true : false}
+          onClick={handleCopyLink}
+        >
+          {inviteLoading ? "Generating Link..." : "Copy link"}
+        </button>
       </div>
     </div>
   );

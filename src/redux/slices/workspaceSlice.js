@@ -25,7 +25,6 @@ export const fetchWorkspaceById = createAsyncThunk(
   }
 );
 
-// New async thunk to add a shared user to the workspace
 export const addSharedUser = createAsyncThunk(
   "workspace/addSharedUser",
   async ({ workspaceId, email, permission }, { rejectWithValue }) => {
@@ -34,7 +33,7 @@ export const addSharedUser = createAsyncThunk(
         `/workspace/${workspaceId}/add-workspace`,
         { email, permission }
       );
-      return response.data; // Return the updated workspace or a success message
+      return response.data; 
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.error || "Failed to add shared user"
