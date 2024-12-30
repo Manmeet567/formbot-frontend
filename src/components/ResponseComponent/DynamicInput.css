@@ -3,6 +3,7 @@
   align-items: center;
   width: 100%;
   justify-content: flex-end;
+  position: relative;
 }
 
 .input-container > input,
@@ -25,7 +26,7 @@
 }
 
 .input-container > input.invalid-input {
-  border-color: red; /* Highlight invalid inputs */
+  border: 1px solid red; /* Highlight invalid inputs */
 }
 
 .input-container > .send-button,
@@ -65,7 +66,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: #1A5FFF;
+  background-color: #1a5fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -75,11 +76,25 @@
 }
 
 .circle.selected {
-  background-color: #FF8E21;
+  background-color: #ff8e21;
 }
 
 .error-message {
   color: red;
   margin-top: 5px;
   font-size: 12px;
+  position: absolute;
+  bottom: -20px;
+  right: 70px;
+}
+@media only screen and (max-width: 768px) {
+  .input-container > input,
+  .ri-box {
+    height: 50px;
+    width: 100%;
+  }
+  .input-container > .send-button,
+  .rating-input > .send-button {
+    height: 50px;
+  }
 }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./DynamicInput.css";
 import { IoSend } from "react-icons/io5";
 
-function DynamicInput({ type, placeholder, onSubmit }) {
+function DynamicInput({ type, placeholder, onSubmit, handleSubmitAndUpdateResponse }) {
   const [inputValue, setInputValue] = useState("");
   const [rating, setRating] = useState(0);
   const [isValid, setIsValid] = useState(true); // State for validation

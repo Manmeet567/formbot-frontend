@@ -6,7 +6,10 @@ import { useParams } from "react-router-dom";
 function Response() {
   const [formFlow, setFormFlow] = useState(null);
   const [error, setError] = useState(null);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [responseId, setResponseId] = useState();
+
   const { formId } = useParams();
 
   useEffect(() => {
@@ -29,10 +32,29 @@ function Response() {
     }
   }, []);
 
+  const handleSubmitAndUpdateResponse = async (responses) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/response/update-response`,
+        { responseId, formId, responses }
+      );
+      setResponseId(response.data.responseId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="response open-sans">
       {loading && <p>Loading...</p>}
-      {error ? <p>{error}</p> : <MainResponse formFlow={formFlow} />}
+      {error ? (
+        <p>{error}</p>
+      ) : (
+        <MainResponse
+          formFlow={formFlow}
+          handleSubmitAndUpdateResponse={handleSubmitAndUpdateResponse}
+        />
+      )}
     </div>
   );
 }

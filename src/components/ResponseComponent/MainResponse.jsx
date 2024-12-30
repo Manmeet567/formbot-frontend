@@ -3,31 +3,41 @@ import "./MainResponse.css";
 import botLogo from "../../assets/bot-logo.png";
 import DynamicInput from "./DynamicInput"; // Import the new component
 
-function MainResponse({ formFlow }) {
+function MainResponse({ formFlow, handleSubmitAndUpdateResponse }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [responses, setResponses] = useState([]); // Store all responses
+  const [responses, setResponses] = useState([]);
   const [chatHistory, setChatHistory] = useState([]);
+  const [inputCount, setInputCount] = useState(0);
 
-  // Handle the user's submission of a response
+  useEffect(() => {
+    if (responses.length === 0) return;
+
+    const newInputCount = responses.filter(
+      (res) => res.type === "input"
+    ).length;
+
+    if (newInputCount > inputCount) {
+      handleSubmitAndUpdateResponse(responses);
+
+      setInputCount(newInputCount);
+    }
+  }, [responses, inputCount]);
+
   const handleResponseSubmit = (response) => {
     const inputField = formFlow[currentIndex];
 
-    // Update responses, and track the user's response
     setResponses((prev) => {
       const updatedResponses = [...prev];
       updatedResponses[currentIndex] = {
         ...inputField,
-        fieldValue: response || null, // Store the response, or null if empty
+        fieldValue: response || null,
       };
       return updatedResponses;
     });
 
-    setChatHistory((prev) => [
-      ...prev,
-      { type: "user", value: response }, // Log the response to the chat history
-    ]);
+    setChatHistory((prev) => [...prev, { type: "user", value: response }]);
 
-    setCurrentIndex((prev) => prev + 1); // Move to the next input field
+    setCurrentIndex((prev) => prev + 1);
   };
 
   const renderCurrentStep = () => {
@@ -38,7 +48,11 @@ function MainResponse({ formFlow }) {
     if (currentItem.type === "bubble") {
       setChatHistory((prev) => [
         ...prev,
-        { type: "bot", value: currentItem.fieldValue, field: currentItem.field },
+        {
+          type: "bot",
+          value: currentItem.fieldValue,
+          field: currentItem.field,
+        },
       ]);
 
       setResponses((prev) => [
@@ -61,7 +75,8 @@ function MainResponse({ formFlow }) {
   const renderChatHistory = () => {
     return chatHistory.map((item, index) => {
       if (item.type === "bot") {
-        if (item.field === "Text") { // For text bubbles
+        if (item.field === "Text") {
+          // For text bubbles
           return (
             <div key={index} className="bot-bubble">
               <div className="cb-img">
@@ -70,14 +85,14 @@ function MainResponse({ formFlow }) {
               <div className="cb-message">{item.value}</div>
             </div>
           );
-        } else if (item.field === "Image") { // For image bubbles
+        } else if (item.field === "Image") {
           return (
             <div key={index} className="bot-bubble">
               <div className="cb-img">
                 <img src={botLogo} alt="" />
               </div>
               <div className="cb-image">
-                <img src={item.value} alt="" /> {/* Display image */}
+                <img src={item.value} alt="" />
               </div>
             </div>
           );
@@ -98,13 +113,12 @@ function MainResponse({ formFlow }) {
     formFlow[currentIndex].field === "Button";
 
   const handleSubmitResponses = () => {
-    // Ensure the response has all fields, filling in missing ones with null
     const completeResponses = formFlow.map((inputField, index) => {
       const response = responses.find((res) => res.field === inputField.field);
-      return response || { ...inputField, fieldValue: null }; // Return null for unfilled fields
+      return response || { ...inputField, fieldValue: null };
     });
 
-    console.log("Complete Responses: ", completeResponses); // Log the final responses
+    console.log("Complete Responses: ", completeResponses);
   };
 
   return (
@@ -120,14 +134,12 @@ function MainResponse({ formFlow }) {
                 type={formFlow[currentIndex]?.field}
                 placeholder={`Type your ${formFlow[currentIndex]?.field}`}
                 onSubmit={handleResponseSubmit}
+                handleSubmitAndUpdateResponse={handleSubmitAndUpdateResponse}
               />
             </div>
           )}
         {isSubmitStep && (
-          <button
-            className="submit-button"
-            onClick={handleSubmitResponses} 
-          >
+          <button className="submit-button" onClick={handleSubmitResponses}>
             {formFlow[currentIndex].fieldValue}
           </button>
         )}
