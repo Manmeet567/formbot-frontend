@@ -13,14 +13,27 @@ function MainResponse({ formFlow, handleSubmitAndUpdateResponse }) {
     if (responses.length === 0) return;
 
     const newInputCount = responses.filter(
-      (res) => res.type === "input"
+      (res) => res.type === "input" && res.field !== "Button"
     ).length;
 
     if (newInputCount > inputCount) {
       handleSubmitAndUpdateResponse(responses);
-
       setInputCount(newInputCount);
     }
+
+    const handleBeforeUnload = (event) => {
+      if (inputCount > 0) {
+        event.preventDefault();
+        event.returnValue =
+          "Your progress will be lost. Do you want to continue?";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, [responses, inputCount]);
 
   const handleResponseSubmit = (response) => {
@@ -113,12 +126,7 @@ function MainResponse({ formFlow, handleSubmitAndUpdateResponse }) {
     formFlow[currentIndex].field === "Button";
 
   const handleSubmitResponses = () => {
-    const completeResponses = formFlow.map((inputField, index) => {
-      const response = responses.find((res) => res.field === inputField.field);
-      return response || { ...inputField, fieldValue: null };
-    });
-
-    console.log("Complete Responses: ", completeResponses);
+    handleSubmitAndUpdateResponse(responses, true);
   };
 
   return (

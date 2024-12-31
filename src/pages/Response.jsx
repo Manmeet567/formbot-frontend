@@ -32,11 +32,11 @@ function Response() {
     }
   }, []);
 
-  const handleSubmitAndUpdateResponse = async (responses) => {
+  const handleSubmitAndUpdateResponse = async (responses, isSubmitted=false) => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/response/update-response`,
-        { responseId, formId, responses }
+        { responseId, formId, responses, isSubmitted}
       );
       setResponseId(response.data.responseId);
     } catch (error) {
