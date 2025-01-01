@@ -69,9 +69,23 @@ export const updateFlow = createAsyncThunk(
   }
 );
 
+export const getResponses = createAsyncThunk(
+  "form/getResponses",
+  async ({ formId }, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.get(`/response/${formId}/get-responses`);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || error.message);
+    }
+  }
+);
+
 const initialState = {
   forms: [],
   activeForm: null,
+  responses: [],
   loading: false,
   error: null,
 };
@@ -150,6 +164,20 @@ const formSlice = createSlice({
         toast.success("Flow Updated");
       })
       .addCase(updateFlow.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error(action.payload);
+      })
+      // Update flow cases
+      .addCase(getResponses.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getResponses.fulfilled, (state, action) => {
+        state.loading = false;
+        state.responses = action.payload;
+      })
+      .addCase(getResponses.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
         toast.error(action.payload);

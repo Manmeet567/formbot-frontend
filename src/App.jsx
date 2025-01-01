@@ -36,7 +36,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
-          <Route path="/response/:formId" element={<Response />} />
+          <Route path="/response/:formName/:formId" element={<Response />} />
           {/* Restrict /login and /signup for authenticated users */}
           <Route element={<PublicRoute />}>
             <Route path="/login" element={<Login />} />
@@ -53,7 +53,10 @@ function App() {
             />
             <Route path="/folder/:workspaceId/:folderId" element={<Folder />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/share-workspace/:inviteToken" element={<ShareWorkspace />} />
+            <Route
+              path="/share-workspace/:inviteToken"
+              element={<ShareWorkspace />}
+            />
           </Route>
 
           <Route path="*" element={<div>Page not found</div>} />

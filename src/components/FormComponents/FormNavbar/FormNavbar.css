@@ -42,6 +42,7 @@
 .fn-btns {
   display: flex;
   align-items: center;
+  margin-left: 150px;
 }
 .fn-btn {
   background-color: transparent;

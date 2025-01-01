@@ -13,7 +13,7 @@ function FormNavbar({ currentTab, setCurrentTab, onSave }) {
   const handleShareClick = () => {
     if (!activeForm?._id) return;
 
-    const link = `${import.meta.env.VITE_CLIENT_BASE_URL}/response/${
+    const link = `${import.meta.env.VITE_CLIENT_BASE_URL}/response/${activeForm.title}/${
       activeForm._id
     }`;
 
