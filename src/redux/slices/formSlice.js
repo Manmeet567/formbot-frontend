@@ -179,8 +179,6 @@ const formSlice = createSlice({
       })
       .addCase(getResponses.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
-        toast.error(action.payload);
       });
   },
 });

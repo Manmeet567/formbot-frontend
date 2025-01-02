@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./MainResponse.css";
 import botLogo from "../../assets/bot-logo.png";
-import DynamicInput from "./DynamicInput"; // Import the new component
+import DynamicInput from "./DynamicInput"; 
+import { toast } from "react-toastify";
 
 function MainResponse({ formFlow, handleSubmitAndUpdateResponse }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -127,6 +128,7 @@ function MainResponse({ formFlow, handleSubmitAndUpdateResponse }) {
 
   const handleSubmitResponses = () => {
     handleSubmitAndUpdateResponse(responses, true);
+    toast.success("Submitted");
   };
 
   return (

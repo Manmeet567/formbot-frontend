@@ -19,6 +19,10 @@
   --im-input-bg-color: #1f1f23;
 }
 
+html{
+  scroll-behavior: smooth;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -42,6 +46,5 @@
 .workspace, .form, .folder {
   min-height: 100vh;
   width: 100%;
-  /* overflow: hidden; */
   background: var(--bg-color);
 }

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import MainResponse from "../components/ResponseComponent/MainResponse";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import {toast} from 'react-toastify';
 
 function Response() {
   const [formFlow, setFormFlow] = useState(null);
@@ -32,11 +33,14 @@ function Response() {
     }
   }, []);
 
-  const handleSubmitAndUpdateResponse = async (responses, isSubmitted=false) => {
+  const handleSubmitAndUpdateResponse = async (
+    responses,
+    isSubmitted = false
+  ) => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/response/update-response`,
-        { responseId, formId, responses, isSubmitted}
+        { responseId, formId, responses, isSubmitted }
       );
       setResponseId(response.data.responseId);
     } catch (error) {
