@@ -1,21 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ToggleSwitch from "../../Navbar/ToggleSwitch";
 import { IoCloseSharp } from "react-icons/io5";
 import "./FormNavbar.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-function FormNavbar({ currentTab, setCurrentTab, onSave }) {
+function FormNavbar({
+  formTitle,
+  setFormTitle,
+  currentTab,
+  setCurrentTab,
+  onSave,
+}) {
   const navigate = useNavigate();
   const { activeForm } = useSelector((state) => state.form);
+
   const [showBubble, setShowBubble] = useState(false);
+
+  useEffect(() => {
+    // Whenever the activeForm changes, update the formTitle state
+    if (activeForm?.title) {
+      setFormTitle(activeForm.title);
+    }
+  }, [activeForm]);
 
   const handleShareClick = () => {
     if (!activeForm?._id) return;
 
-    const link = `${import.meta.env.VITE_CLIENT_BASE_URL}/response/${activeForm.title}/${
-      activeForm._id
-    }`;
+    const link = `${import.meta.env.VITE_CLIENT_BASE_URL}/response/${
+      activeForm.title
+    }/${activeForm._id}`;
 
     navigator.clipboard
       .writeText(link)
@@ -31,10 +45,19 @@ function FormNavbar({ currentTab, setCurrentTab, onSave }) {
       });
   };
 
+  const handleTitleChange = (e) => {
+    setFormTitle(e.target.value);
+  };
+
   return (
     <div className="form-navbar open-sans">
       <div className="form-nav-input">
-        <input type="text" placeholder="Enter Form Name" />
+        <input
+          type="text"
+          placeholder="Enter Form Name"
+          value={formTitle}
+          onChange={handleTitleChange}
+        />
       </div>
       <div className="fn-btns">
         <button

@@ -13,6 +13,7 @@ function Form() {
   const [flow, setFlow] = useState([]);
   const { workspaceId, folderId, formId } = useParams();
   const { activeForm, loading, error } = useSelector((state) => state.form);
+  const [formTitle, setFormTitle] = useState(activeForm?.title || "");
 
   useEffect(() => {
     dispatch(getForm({ workspaceId, folderId, formId }));
@@ -29,31 +30,42 @@ function Form() {
       return;
     }
 
+    // Check for missing field value in bubble elements
     const missingField = flow.some(
       (item) => item.type === "bubble" && !item.fieldValue
     );
-
     if (missingField) {
       toast.error("All bubble elements must have a field value!");
       return;
     }
 
+    // Check if there's at least one button element
     const hasButtonInput = flow.some((item) => item.field === "Button");
-
     if (!hasButtonInput) {
       toast.error("Flow must contain at least one button input element!");
       return;
     }
+
+    // Check for changes in both flow and title
     const flowChanged =
       JSON.stringify(flow) !== JSON.stringify(activeForm?.flow);
+    const titleChanged = formTitle !== activeForm?.title;
 
-    if (!flowChanged) {
-      toast.error("Flow hasn't changed");
+    if (!flowChanged && !titleChanged) {
+      toast.error("Nothing has changed!");
       return;
     }
 
-    console.log("Flow submitted:", flow);
-    dispatch(updateFlow({ formId: formId, flow }));
+    // Prepare update object based on what changed
+    const updateData = {};
+    if (flowChanged) updateData.flow = flow;
+    if (titleChanged) updateData.title = formTitle;
+
+    // Dispatch only if there's an actual change
+    if (Object.keys(updateData).length > 0) {
+      console.log("Flow or Title submitted:", updateData);
+      dispatch(updateFlow({ formId: formId, ...updateData }));
+    }
   };
 
   return (
@@ -73,6 +85,8 @@ function Form() {
       ) : !error ? (
         <>
           <FormNavbar
+            formTitle={formTitle}
+            setFormTitle={setFormTitle}
             currentTab={currentTab}
             setCurrentTab={setCurrentTab}
             onSave={handleSubmitFlow}

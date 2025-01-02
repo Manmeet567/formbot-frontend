@@ -56,10 +56,11 @@ export const getForm = createAsyncThunk(
 // Update flow of a form
 export const updateFlow = createAsyncThunk(
   "form/updateFlow",
-  async ({ formId, flow }, { rejectWithValue }) => {
+  async ({ formId, flow, title }, { rejectWithValue }) => {
     try {
       const response = await apiClient.put(`/form/${formId}/update-flow`, {
         flow,
+        title
       });
 
       return response.data;
