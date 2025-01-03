@@ -6,7 +6,6 @@ const PrivateRoute = () => {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    localStorage.setItem("redirectPath", location.pathname);
     return <Navigate to="/login" state={{ from: location }} />;
   }
 

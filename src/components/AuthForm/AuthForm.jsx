@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signupUser, loginUser } from "../../redux/slices/authSlice";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import "./AuthForm.css";
@@ -10,7 +10,7 @@ import triangle from "../../assets/triangle.png";
 const AuthForm = ({ type }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const location = useLocation();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -44,11 +44,10 @@ const AuthForm = ({ type }) => {
       response = await dispatch(loginUser(formData)).unwrap();
     }
     if (response) {
-      const redirectPath = localStorage.getItem("redirectPath");
+      const redirectPath = location.state.from;
 
       if (redirectPath) {
         navigate(redirectPath);
-        localStorage.removeItem("redirectPath");
       } else {
         navigate(`/workspace/${response?.workspaceAccess[0]?._id}`);
       }
