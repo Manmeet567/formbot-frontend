@@ -60,7 +60,7 @@ export const updateFlow = createAsyncThunk(
     try {
       const response = await apiClient.put(`/form/${formId}/update-flow`, {
         flow,
-        title
+        title,
       });
 
       return response.data;
@@ -159,14 +159,17 @@ const formSlice = createSlice({
       })
       .addCase(updateFlow.fulfilled, (state, action) => {
         state.loading = false;
+
         if (state.activeForm && state.activeForm._id === action.payload._id) {
-          state.activeForm.flow = action.payload.updatedFlow;
+          state.activeForm = {
+            ...state.activeForm,
+            flow: action.payload.updatedFlow,
+          };
         }
         toast.success("Flow Updated");
       })
       .addCase(updateFlow.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
         toast.error(action.payload);
       })
       // Update flow cases

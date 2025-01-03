@@ -1,10 +1,14 @@
 :root {
   --mwf-color: #00000014;
   --form-bg-color: #70707080;
+  --mwf-bg-color-reverse: #ffffff14;
+  --mwf-color-reverse: #ffffffeb;
 }
 [data-theme="dark"] {
   --mwf-color: #ffffff14;
   --form-bg-color: #ffffff80;
+  --mwf-bg-color-reverse: #fff;
+  --mwf-color-reverse: #000000eb;
 }
 
 .main-workspace {
@@ -32,6 +36,12 @@
   min-width: 171px;
   position: relative;
 }
+
+.activeFolder {
+  background-color: var(--mwf-bg-color-reverse);
+  color: var(--mwf-color-reverse);
+}
+
 .mwf-create > span {
   margin-left: 10px;
 }

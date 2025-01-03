@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import ToggleSwitch from "../../Navbar/ToggleSwitch";
 import { IoCloseSharp } from "react-icons/io5";
 import "./FormNavbar.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setActiveForm } from "../../../redux/slices/formSlice";
 
 function FormNavbar({
   formTitle,
@@ -13,12 +14,12 @@ function FormNavbar({
   onSave,
 }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { activeForm } = useSelector((state) => state.form);
 
   const [showBubble, setShowBubble] = useState(false);
 
   useEffect(() => {
-    // Whenever the activeForm changes, update the formTitle state
     if (activeForm?.title) {
       setFormTitle(activeForm.title);
     }
@@ -27,9 +28,11 @@ function FormNavbar({
   const handleShareClick = () => {
     if (!activeForm?._id) return;
 
-    const link = `${import.meta.env.VITE_CLIENT_BASE_URL}/response/${
-      activeForm.title
-    }/${activeForm._id}`;
+    const formattedTitle = formTitle.toLowerCase().replace(/\s+/g, "-");
+
+    const link = `${
+      import.meta.env.VITE_CLIENT_BASE_URL
+    }/response/${formattedTitle}/${activeForm._id}`;
 
     navigator.clipboard
       .writeText(link)
@@ -90,7 +93,10 @@ function FormNavbar({
             <>
               <button onClick={() => onSave()}>Save</button>
               <IoCloseSharp
-                onClick={() => navigate(-1)}
+                onClick={() => {
+                  navigate(-1);
+                  dispatch(setActiveForm(null));
+                }}
                 className="fneb-close"
               />
             </>

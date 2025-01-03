@@ -67,10 +67,6 @@ const inputOptions = {
 function EditForm({ flow, setFlow }) {
   const { activeForm } = useSelector((state) => state.form);
 
-  useEffect(() => {
-    console.log("ActiveForm: ", activeForm);
-  }, [activeForm]);
-
   const addBoxToFlow = (boxType, fieldType) => {
     if (activeForm?.permission !== "edit") return;
 

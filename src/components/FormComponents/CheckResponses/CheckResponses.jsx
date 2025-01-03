@@ -20,10 +20,6 @@ function CheckResponses({ flow }) {
     ? ((completeResponses / totalResponses) * 100).toFixed(2)
     : 0;
 
-  useEffect(() => {
-    console.log("responses:", responses);
-  }, [responses]);
-
   return (
     <div className="check-responses open-sans">
       {responses?.length > 0 && (
@@ -60,7 +56,7 @@ function CheckResponses({ flow }) {
                       Submitted At
                     </th>
                     {flow
-                      .filter((header) => header.field !== "Button")
+                      ?.filter((header) => header.field !== "Button")
                       .map((header, index) => (
                         <th key={index} style={{ minWidth: "150px" }}>
                           {header.field}
@@ -92,7 +88,7 @@ function CheckResponses({ flow }) {
                         )}
                       </td>
                       {flow
-                        .filter((header) => header.field !== "Button")
+                        ?.filter((header) => header.field !== "Button")
                         .map((header, idx) => {
                           const correspondingResponse = response.responses.find(
                             (item) => item._id === header._id

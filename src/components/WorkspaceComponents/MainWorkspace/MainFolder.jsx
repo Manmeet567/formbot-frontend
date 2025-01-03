@@ -12,24 +12,20 @@ import {
   setPermission,
 } from "../../../redux/slices/workspaceSlice";
 import { setfolders, setActiveFolder } from "../../../redux/slices/folderSlice";
-import { setForms } from "../../../redux/slices/formSlice";
+import { setForms, setActiveForm } from "../../../redux/slices/formSlice";
 import apiClient from "../../../../utils/apiClient";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 function MainFolder() {
-  const { workspaceId, folderId } = useParams(); // Get folderId from URL params
+  const { workspaceId, folderId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { activeWorkspace, permission } = useSelector(
     (state) => state.workspace
   );
-  const { folders } = useSelector((state) => state.folder); // You can also get the activeFolder if needed
-  const { forms } = useSelector((state) => state.form); // All forms from the Redux store
-
-  useEffect(() => {
-    console.log("folderId:", folderId);
-  }, [folderId]);
+  const { folders, activeFolder } = useSelector((state) => state.folder);
+  const { forms } = useSelector((state) => state.form);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
@@ -41,6 +37,10 @@ function MainFolder() {
   const closeModal = () => setIsModalOpen(false);
   const openDeleteModal = () => setIsDeleteModal(true);
   const closeDeleteModal = () => setIsDeleteModal(false);
+
+  useEffect(() => {
+    dispatch(setActiveForm(null));
+  }, []);
 
   useEffect(() => {
     const fetchSingleWorkspace = async () => {
@@ -76,7 +76,9 @@ function MainFolder() {
         {folders?.length !== 0 &&
           folders.map((folder) => (
             <div
-              className="mwf-folder"
+              className={`mwf-folder ${
+                activeFolder?._id === folder._id ? "activeFolder" : ""
+              }`}
               key={folder._id}
               onClick={() => handleFolderClick(folder)}
             >

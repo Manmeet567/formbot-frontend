@@ -14,7 +14,7 @@ import { setfolders, setActiveFolder } from "../../../redux/slices/folderSlice";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import { useNavigate, useParams } from "react-router-dom";
 import apiClient from "../../../../utils/apiClient";
-import { setForms } from "../../../redux/slices/formSlice";
+import { setForms, setActiveForm } from "../../../redux/slices/formSlice";
 import { Link } from "react-router-dom";
 
 function MainWorkspace() {
@@ -26,6 +26,11 @@ function MainWorkspace() {
   );
   const { folders, activeFolder } = useSelector((state) => state.folder);
   const { forms } = useSelector((state) => state.form);
+
+  useEffect(() => {
+    dispatch(setActiveFolder(null));
+    dispatch(setActiveForm(null));
+  }, [])
 
   const { workspaceId } = useParams();
   useEffect(() => {
@@ -47,7 +52,7 @@ function MainWorkspace() {
     if (!activeWorkspace || activeWorkspace._id !== workspaceId) {
       fetchSingleWorkspace();
     }
-  }, [workspaceId, activeWorkspace,dispatch]);
+  }, [workspaceId, activeWorkspace, dispatch]);
 
   const filteredForms = activeFolder
     ? forms
@@ -98,7 +103,9 @@ function MainWorkspace() {
             {folders?.length !== 0 &&
               folders.map((folder) => (
                 <div
-                  className="mwf-folder"
+                  className={`mwf-folder ${
+                    activeFolder?._id === folder._id ? "activeFolder" : ""
+                  }`}
                   key={folder._id}
                   onClick={() => handleFolderClick(folder)}
                 >

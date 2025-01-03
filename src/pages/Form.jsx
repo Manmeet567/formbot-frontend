@@ -39,14 +39,12 @@ function Form() {
       return;
     }
 
-    // Check if there's at least one button element
     const hasButtonInput = flow.some((item) => item.field === "Button");
     if (!hasButtonInput) {
       toast.error("Flow must contain at least one button input element!");
       return;
     }
 
-    // Check for changes in both flow and title
     const flowChanged =
       JSON.stringify(flow) !== JSON.stringify(activeForm?.flow);
     const titleChanged = formTitle !== activeForm?.title;
@@ -63,7 +61,6 @@ function Form() {
 
     // Dispatch only if there's an actual change
     if (Object.keys(updateData).length > 0) {
-      console.log("Flow or Title submitted:", updateData);
       dispatch(updateFlow({ formId: formId, ...updateData }));
     }
   };

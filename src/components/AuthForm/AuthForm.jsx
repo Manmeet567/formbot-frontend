@@ -30,7 +30,7 @@ const AuthForm = ({ type }) => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit =  async (e) => {
     e.preventDefault();
 
     if (type === "signup" && formData.password !== formData.confirmPassword) {
@@ -39,18 +39,21 @@ const AuthForm = ({ type }) => {
     }
 
     try {
+      let response;
       if (type === "signup") {
-        // Dispatch signup
-        await dispatch(signupUser(formData)).unwrap();
+        response = await dispatch(signupUser(formData)).unwrap();
       } else {
-        await dispatch(loginUser(formData)).unwrap();
+        response = await dispatch(loginUser(formData)).unwrap();
       }
-      // Get the redirect path from the location state or default to '/workspace'
-      if (userData) {
-        const redirectPath =
-          location.state?.from ||
-          `/workspace/${userData?.workspaceAccess[0]?._id}`;
-        navigate(redirectPath);
+      if (response) {
+        const redirectPath = localStorage.getItem('redirectPath');
+  
+        if (redirectPath) {
+          navigate(redirectPath);
+          localStorage.removeItem('redirectPath');
+        } else {
+          navigate(`/workspace/${response?.workspaceAccess[0]?._id}`);
+        }
       }
     } catch (err) {
       setError(err.message);

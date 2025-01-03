@@ -36,6 +36,7 @@ function SettingsComponent() {
 
     if (userData?.email === email) {
       toast.error(`${email} is already your email for this account!`);
+      return;
     }
 
     if ((oldPassword && !newPassword) || (!oldPassword && newPassword)) {
@@ -49,7 +50,13 @@ function SettingsComponent() {
     };
 
     dispatch(updateUser(updatedData));
-    dispatch(updateOwnerName({ userId: userData?._id, userName: name }));
+    if (name) {
+      dispatch(updateOwnerName({ userId: userData?._id, userName: name }));
+    }
+    setName("");
+    setEmail("");
+    setOldPassword("");
+    setNewPassword("");
   };
 
   const handleLogout = () => {

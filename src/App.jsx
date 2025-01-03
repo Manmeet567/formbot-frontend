@@ -20,13 +20,10 @@ function App() {
   const token = localStorage.getItem("token");
 
   const { userData } = useSelector((state) => state.auth);
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
 
   useEffect(() => {
     if (token && !userData) {
-      dispatch(fetchUserData()).unwrap();
+      dispatch(fetchUserData());
     }
   }, [dispatch, token, userData]);
 

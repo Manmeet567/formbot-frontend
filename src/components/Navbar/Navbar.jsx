@@ -13,15 +13,12 @@ function Navbar() {
   const navigate = useNavigate(); // For programmatic navigation
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { userData } = useSelector((state) => state.auth);
-  const {activeWorkspace} = useSelector((state) => state.workspace);
+  const { activeWorkspace } = useSelector((state) => state.workspace);
   const [openWorkspace, setOpenWorkspace] = useState(false);
-  const [activeName, setActiveName] = useState(null); 
+  const [activeName, setActiveName] = useState(null);
 
   useEffect(() => {
-    console.log("UserData: ", userData);
-    console.log("Active Workspace:", activeWorkspace)
     setActiveName(activeWorkspace?.ownerName);
-
   }, [activeWorkspace]);
 
   const openModal = () => setIsModalOpen(true);
@@ -38,9 +35,8 @@ function Navbar() {
     ) || [];
 
   const handleWorkspaceClick = (workspace) => {
-    
     setOpenWorkspace(false);
-    navigate(`/workspace/${workspace._id}`); 
+    navigate(`/workspace/${workspace._id}`);
   };
 
   return (
