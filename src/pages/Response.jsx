@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import MainResponse from "../components/ResponseComponent/MainResponse";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import {toast} from 'react-toastify';
 
 function Response() {
   const [formFlow, setFormFlow] = useState(null);

@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import "./DynamicInput.css";
 import { IoSend } from "react-icons/io5";
 
-function DynamicInput({ type, placeholder, onSubmit, handleSubmitAndUpdateResponse }) {
+function DynamicInput({ type, placeholder, onSubmit }) {
   const [inputValue, setInputValue] = useState("");
-  const [rating, setRating] = useState(0);
-  const [isValid, setIsValid] = useState(true); // State for validation
+  const [rating, setRating] = useState(null); // Initialize as null so no rating is selected initially
+  const [isValid, setIsValid] = useState(true);
 
-  // Validation function for different types
   const validateInput = (value) => {
     if (type === "Email") {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -42,15 +41,19 @@ function DynamicInput({ type, placeholder, onSubmit, handleSubmitAndUpdateRespon
           {[1, 2, 3, 4, 5].map((num) => (
             <div
               key={num}
-              className={`circle ${rating >= num ? "selected" : ""}`}
+              className={`circle ${rating === num ? "selected" : ""}`}
               onClick={() => handleRatingClick(num)}
             >
               {num}
             </div>
           ))}
         </div>
-        <button onClick={() => onSubmit(rating)} className="send-button">
-          <IoSend style={{fontSize:"30px"}} />
+        <button
+          disabled={rating !== null ? false : true}
+          onClick={() => onSubmit(rating)}
+          className="send-button"
+        >
+          <IoSend style={{ fontSize: "30px" }} />
         </button>
       </div>
     );
@@ -59,20 +62,20 @@ function DynamicInput({ type, placeholder, onSubmit, handleSubmitAndUpdateRespon
   return (
     <div className="input-container">
       <input
-        type={type === "Phone" ? "tel" : type} 
+        type={type === "Phone" ? "tel" : type}
         value={inputValue}
         placeholder={placeholder}
         onChange={(e) => {
           setInputValue(e.target.value);
-          setIsValid(true); 
+          setIsValid(true);
         }}
-        className={isValid ? "" : "invalid-input"} 
+        className={isValid ? "" : "invalid-input"}
         onKeyPress={(e) => {
-          if (e.key === "Enter") handleSubmit(); 
+          if (e.key === "Enter") handleSubmit();
         }}
       />
       <button onClick={handleSubmit} className="send-button">
-        <IoSend style={{fontSize:"30px"}} />
+        <IoSend style={{ fontSize: "30px" }} />
       </button>
       {!isValid && <div className="error-message">Invalid input</div>}
     </div>

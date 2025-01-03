@@ -144,7 +144,6 @@ function MainResponse({ formFlow, handleSubmitAndUpdateResponse }) {
                 type={formFlow[currentIndex]?.field}
                 placeholder={`Type your ${formFlow[currentIndex]?.field}`}
                 onSubmit={handleResponseSubmit}
-                handleSubmitAndUpdateResponse={handleSubmitAndUpdateResponse}
               />
             </div>
           )}
