@@ -17,20 +17,20 @@ import apiClient from "../../../../utils/apiClient";
 import { setForms, setActiveForm } from "../../../redux/slices/formSlice";
 import { Link } from "react-router-dom";
 
-function MainWorkspace() {
+function MainWorkspace({ setAccessError }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { userData } = useSelector((state) => state.auth);
   const { activeWorkspace, permission } = useSelector(
     (state) => state.workspace
   );
+
   const { folders, activeFolder } = useSelector((state) => state.folder);
   const { forms } = useSelector((state) => state.form);
 
   useEffect(() => {
     dispatch(setActiveFolder(null));
     dispatch(setActiveForm(null));
-  }, [])
+  }, []);
 
   const { workspaceId } = useParams();
   useEffect(() => {
@@ -46,6 +46,7 @@ function MainWorkspace() {
         return;
       } catch (error) {
         console.log(error);
+        setAccessError(error?.response?.data?.error);
       }
     };
 

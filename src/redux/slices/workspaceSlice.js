@@ -9,22 +9,6 @@ const initialState = {
   permission: null,
 };
 
-export const fetchWorkspaceById = createAsyncThunk(
-  "workspace/fetchWorkspaceById",
-  async (workspaceId, { rejectWithValue }) => {
-    try {
-      const response = await apiClient.get(
-        `/workspace/${workspaceId}/get-workspace`
-      );
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.error || "Failed to fetch workspace"
-      );
-    }
-  }
-);
-
 export const addSharedUser = createAsyncThunk(
   "workspace/addSharedUser",
   async ({ workspaceId, email, permission }, { rejectWithValue }) => {
@@ -33,7 +17,7 @@ export const addSharedUser = createAsyncThunk(
         `/workspace/${workspaceId}/add-workspace`,
         { email, permission }
       );
-      return response.data; 
+      return response.data;
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.error || "Failed to add shared user"
@@ -62,19 +46,6 @@ const workspaceSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchWorkspaceById.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchWorkspaceById.fulfilled, (state, action) => {
-        state.loading = false;
-        state.activeWorkspace = action.payload;
-        state.permission = action.payload.permission;
-      })
-      .addCase(fetchWorkspaceById.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
       .addCase(addSharedUser.pending, (state) => {
         state.loading = true;
         state.error = null;

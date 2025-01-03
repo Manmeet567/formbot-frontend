@@ -17,7 +17,7 @@ import apiClient from "../../../../utils/apiClient";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-function MainFolder() {
+function MainFolder({ setAccessError }) {
   const { workspaceId, folderId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -55,6 +55,7 @@ function MainFolder() {
         return;
       } catch (error) {
         console.log(error);
+        setAccessError(error?.response?.data?.error);
       }
     };
 

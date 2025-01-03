@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signupUser, loginUser } from "../../redux/slices/authSlice";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import "./AuthForm.css";
@@ -10,8 +10,6 @@ import triangle from "../../assets/triangle.png";
 const AuthForm = ({ type }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation(); // To get the previous location (redirect target)
-  const { userData } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -28,9 +26,10 @@ const AuthForm = ({ type }) => {
       ...prevState,
       [name]: value,
     }));
+    setError("");
   };
 
-  const handleSubmit =  async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (type === "signup" && formData.password !== formData.confirmPassword) {
@@ -38,25 +37,21 @@ const AuthForm = ({ type }) => {
       return;
     }
 
-    try {
-      let response;
-      if (type === "signup") {
-        response = await dispatch(signupUser(formData)).unwrap();
+    let response;
+    if (type === "signup") {
+      response = await dispatch(signupUser(formData)).unwrap();
+    } else {
+      response = await dispatch(loginUser(formData)).unwrap();
+    }
+    if (response) {
+      const redirectPath = localStorage.getItem("redirectPath");
+
+      if (redirectPath) {
+        navigate(redirectPath);
+        localStorage.removeItem("redirectPath");
       } else {
-        response = await dispatch(loginUser(formData)).unwrap();
+        navigate(`/workspace/${response?.workspaceAccess[0]?._id}`);
       }
-      if (response) {
-        const redirectPath = localStorage.getItem('redirectPath');
-  
-        if (redirectPath) {
-          navigate(redirectPath);
-          localStorage.removeItem('redirectPath');
-        } else {
-          navigate(`/workspace/${response?.workspaceAccess[0]?._id}`);
-        }
-      }
-    } catch (err) {
-      setError(err.message);
     }
   };
 
