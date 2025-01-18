@@ -166,7 +166,7 @@ const formSlice = createSlice({
             flow: action.payload.updatedFlow,
           };
         }
-        toast.success("Flow Updated");
+        toast.success("Updated");
       })
       .addCase(updateFlow.rejected, (state, action) => {
         state.loading = false;
@@ -183,6 +183,7 @@ const formSlice = createSlice({
       })
       .addCase(getResponses.rejected, (state, action) => {
         state.loading = false;
+        state.responses = [];
       });
   },
 });

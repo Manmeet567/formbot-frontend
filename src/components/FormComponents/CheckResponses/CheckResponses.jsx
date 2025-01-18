@@ -1,13 +1,14 @@
-import { useEffect } from "react";
 import "./CheckResponses.css";
-import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { LuCalendar } from "react-icons/lu";
 import DoughnutChart from "./DoughnutChart";
+import { useEffect } from "react";
 
 function CheckResponses({ flow }) {
-  const { formId } = useParams();
   const { activeForm, responses } = useSelector((state) => state.form);
+  useEffect(() => {
+    console.log(responses);
+  }, [responses])
 
   const completeResponses = responses.filter(
     (response) => response.status === "completed"

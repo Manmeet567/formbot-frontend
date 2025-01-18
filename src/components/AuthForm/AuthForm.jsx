@@ -49,7 +49,11 @@ const AuthForm = ({ type }) => {
       if (redirectPath) {
         navigate(redirectPath);
       } else {
-        navigate(`/workspace/${response?.workspaceAccess[0]?._id}`);
+        const matchingOwner = response?.workspaceAccess.find(
+          (workspace) => workspace?.ownerName === response?.name
+        );
+        // console.log(matchingOwner);
+        navigate(`/workspace/${matchingOwner?._id}`);
       }
     }
   };
